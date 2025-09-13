@@ -19,205 +19,201 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 'movie-booking',
-    title: 'Movie Booking Application',
+    id: 'movie-reserve',
+    title: 'Movie-Reserve',
     category: 'recent',
     year: '2024',
-    description: 'Full-stack React application with Node.js backend for seamless movie booking experience',
-    longDescription: `The challenge was creating a seamless booking experience that handles concurrent users, payment processing, and real-time seat availability. I architected a robust backend system using Node.js and Express, implementing JWT-based authentication and role-based access control to secure user sessions and booking data.
+    description: 'Backend web application for online movie ticket reservations with seat selection and admin functionality',
+    longDescription: `Movie-Reserve is a comprehensive backend web application designed for online movie ticket reservations. Built with Node.js and Express, this project demonstrates my ability to create scalable server-side applications with complex business logic.
 
-    The system handles complex business logic including seat locking during booking process, payment integration, and automated email confirmations. Built with React frontend for intuitive user experience and Express backend for reliable API performance.`,
-    technologies: ['React', 'Node.js', 'Express', 'JWT Auth', 'MongoDB', 'Stripe API'],
+    The system handles movie listings, seat selection algorithms, user authentication, and administrative controls. It showcases my backend development skills in creating APIs that manage reservations, prevent booking conflicts, and provide seamless user experiences.`,
+    technologies: ['Node.js', 'Express', 'JavaScript', 'Backend API', 'Database Management'],
     features: [
-      'Real-time seat availability tracking',
-      'Secure payment processing with Stripe',
-      'JWT-based authentication system',
-      'Role-based access control (User, Admin)',
-      'Automated email confirmations',
-      'Responsive mobile-first design'
+      'Online movie ticket reservation system',
+      'Dynamic seat selection functionality',
+      'Admin dashboard for movie management',
+      'User authentication and session management',
+      'Booking conflict prevention',
+      'RESTful API architecture'
     ],
     challenges: [
-      'Preventing double-booking with concurrent users',
-      'Implementing secure payment flow',
-      'Managing complex state for seat selection',
-      'Optimizing database queries for performance'
+      'Implementing complex seat selection logic',
+      'Preventing concurrent booking conflicts',
+      'Designing efficient database schema',
+      'Creating admin controls for movie management'
     ],
     achievements: [
-      'Zero double-booking incidents with locking mechanism',
-      'Sub-second API response times',
-      '99.9% uptime in production',
-      'Secure payment processing with PCI compliance'
+      'Successfully deployed reservation system',
+      'Clean backend architecture implementation',
+      'Efficient seat selection algorithm',
+      'Robust admin functionality'
     ],
-    githubUrl: 'https://github.com/ammarhere02/movie-booking-app',
+    githubUrl: 'https://github.com/ammarhere02/Movie-Reserve',
     icon: Globe
   },
   {
-    id: 'auth-service',
-    title: 'Authentication Service API',
+    id: 'blog-post',
+    title: 'Blog-Post',
     category: 'recent',
     year: '2024',
-    description: 'Comprehensive authentication microservice with JWT, OAuth, and RBAC implementation',
-    longDescription: `Built a scalable authentication microservice that handles user management, JWT token generation with refresh token rotation, OAuth integration with multiple providers, and comprehensive role-based access control. The service is designed to be provider-agnostic and easily integrable with any frontend application.
+    description: 'Personal publishing platform built with TypeScript for content creation and management',
+    longDescription: `Blog-Post is a modern personal publishing platform that demonstrates my expertise in TypeScript and full-stack development. This project showcases clean architecture patterns and type-safe development practices for content management systems.
 
-    Implemented advanced security features including rate limiting, account lockout mechanisms, password strength validation, and audit logging. The service supports multiple authentication strategies and can scale horizontally to handle millions of users.`,
-    technologies: ['Node.js', 'NestJS', 'PostgreSQL', 'Redis', 'JWT', 'OAuth 2.0'],
+    The platform features robust content creation tools, categorization systems, and efficient post management. Built with a focus on developer experience and maintainable code, it highlights my ability to work with modern TypeScript development patterns and create scalable web applications.`,
+    technologies: ['TypeScript', 'Web Development', 'Content Management', 'Frontend Development'],
     features: [
-      'JWT with refresh token rotation',
-      'OAuth integration (Google, GitHub, LinkedIn)',
-      'Role-based access control (RBAC)',
-      'Rate limiting and brute force protection',
-      'Account verification via email',
-      'Password reset functionality',
-      'Comprehensive audit logging'
+      'Content creation and editing interface',
+      'Post categorization and tagging system',
+      'Modern TypeScript architecture',
+      'Responsive design implementation',
+      'Content management dashboard',
+      'Type-safe development patterns'
     ],
     challenges: [
-      'Implementing secure token refresh mechanism',
-      'Managing OAuth provider inconsistencies',
-      'Designing flexible RBAC system',
-      'Ensuring GDPR compliance for user data'
+      'Implementing rich text editing functionality',
+      'Designing flexible content categorization',
+      'Creating intuitive user interfaces',
+      'Maintaining type safety across components'
     ],
     achievements: [
-      'Handles 10K+ concurrent authentications',
-      'Zero security breaches in 6 months production',
-      '99.99% API availability',
-      'OWASP security compliance'
+      'Clean TypeScript implementation',
+      'Intuitive content management system',
+      'Responsive and modern UI design',
+      'Scalable architecture foundation'
     ],
-    githubUrl: 'https://github.com/ammarhere02/auth-service-api',
-    icon: Shield
+    githubUrl: 'https://github.com/ammarhere02/Blog-Post',
+    icon: Code
   },
   {
-    id: 'inventory-system',
-    title: 'Inventory Management System',
+    id: 'e-store',
+    title: 'E-Store',
     category: 'recent',
     year: '2024',
-    description: 'Enterprise-grade inventory management with real-time tracking and analytics',
-    longDescription: `Developed a comprehensive inventory management system for a mid-size retail company, handling complex inventory operations including stock tracking, supplier management, automated reordering, and detailed analytics. The system integrates with multiple warehouse locations and provides real-time visibility into stock levels.
+    description: 'Lightweight e-commerce web application with full CRUD functionality for product management',
+    longDescription: `E-Store is a lightweight yet comprehensive e-commerce web application that demonstrates my ability to build complete online shopping solutions. Built with JavaScript, this project showcases full CRUD operations, product management systems, and e-commerce functionality.
 
-    Implemented advanced features like predictive analytics for demand forecasting, automated low-stock alerts, and comprehensive reporting dashboard. The system reduced manual inventory tasks by 80% and improved stock accuracy to 99.5%.`,
-    technologies: ['Node.js', 'Express', 'PostgreSQL', 'Prisma', 'Redis', 'Chart.js'],
+    The application features a clean, intuitive interface for both customers and administrators, with robust product management capabilities. This project highlights my skills in creating scalable e-commerce solutions with efficient data management and user-friendly interfaces.`,
+    technologies: ['JavaScript', 'Web Development', 'E-commerce', 'CRUD Operations', 'Product Management'],
     features: [
-      'Real-time inventory tracking',
-      'Automated reorder point calculations',
-      'Supplier management and integration',
-      'Multi-location warehouse support',
-      'Demand forecasting analytics',
-      'Comprehensive reporting dashboard',
-      'Barcode scanning integration'
+      'Complete product catalog management',
+      'Full CRUD operations for products',
+      'User-friendly shopping interface',
+      'Admin product management dashboard',
+      'Responsive web design',
+      'Efficient data handling and storage'
     ],
     challenges: [
-      'Handling concurrent inventory updates',
-      'Implementing complex business rules',
-      'Optimizing queries for large datasets',
-      'Building accurate forecasting algorithms'
+      'Implementing comprehensive CRUD operations',
+      'Designing intuitive product management UI',
+      'Creating responsive e-commerce layouts',
+      'Managing product data efficiently'
     ],
     achievements: [
-      '80% reduction in manual inventory tasks',
-      '99.5% inventory accuracy improvement',
-      '60% faster stock-taking process',
-      'Real-time visibility across 5 locations'
+      'Fully functional e-commerce platform',
+      'Clean and maintainable JavaScript code',
+      'Intuitive admin and user interfaces',
+      'Efficient product management system'
     ],
-    githubUrl: 'https://github.com/ammarhere02/inventory-system',
+    githubUrl: 'https://github.com/ammarhere02/E-Store',
     icon: Database
   },
   {
-    id: 'microservices-platform',
-    title: 'Docker Microservices Platform',
+    id: 'todo-list',
+    title: 'To-do-List',
     category: 'recent',
     year: '2024',
-    description: 'Containerized microservices architecture with Docker, nginx, and service mesh',
-    longDescription: `Architected and implemented a complete microservices platform using Docker containers, featuring service discovery, load balancing, centralized logging, and monitoring. The platform supports independent deployment and scaling of services while maintaining data consistency and fault tolerance.
+    description: 'Dynamic task management application with JavaScript for organization and prioritization',
+    longDescription: `To-do-List is a comprehensive task management application built with JavaScript that demonstrates my ability to create interactive and dynamic web applications. This project showcases modern JavaScript development practices and efficient DOM manipulation techniques.
 
-    Implemented CI/CD pipelines with automated testing, security scanning, and deployment strategies. The platform serves as a foundation for multiple applications and has improved deployment frequency by 10x while reducing downtime to near zero.`,
-    technologies: ['Docker', 'Node.js', 'nginx', 'Redis', 'PostgreSQL', 'Prometheus'],
+    The application features intuitive task organization, priority management, and dynamic updates. It highlights my frontend development skills and ability to create responsive, user-friendly interfaces that enhance productivity and task management workflows.`,
+    technologies: ['JavaScript', 'DOM Manipulation', 'Local Storage', 'CSS', 'HTML5'],
     features: [
-      'Containerized service architecture',
-      'Service discovery and load balancing',
-      'Centralized logging with ELK stack',
-      'Monitoring and alerting with Prometheus',
-      'Automated CI/CD pipelines',
-      'Database sharding and replication',
-      'API gateway with rate limiting'
+      'Dynamic task creation and management',
+      'Task prioritization and categorization',
+      'Interactive user interface',
+      'Local storage for data persistence',
+      'Responsive design implementation',
+      'Real-time task status updates'
     ],
     challenges: [
-      'Managing service-to-service communication',
-      'Implementing distributed transaction handling',
-      'Ensuring data consistency across services',
-      'Optimizing container resource usage'
+      'Implementing efficient DOM manipulation',
+      'Creating intuitive task organization UI',
+      'Managing local storage effectively',
+      'Building responsive task interfaces'
     ],
     achievements: [
-      '10x improvement in deployment frequency',
-      '99.99% system availability',
-      '70% reduction in infrastructure costs',
-      'Zero-downtime deployments'
+      'Smooth and responsive user experience',
+      'Efficient JavaScript implementation',
+      'Intuitive task management workflow',
+      'Clean and maintainable code structure'
     ],
-    githubUrl: 'https://github.com/ammarhere02/docker-microservices',
+    githubUrl: 'https://github.com/ammarhere02/To-do-List',
     icon: Server
   },
   {
-    id: 'api-gateway',
-    title: 'Enterprise API Gateway',
+    id: 'ai-powerpoint',
+    title: 'Ai-PowerPoint',
     category: 'featured',
-    year: '2023',
-    description: 'High-performance API gateway with rate limiting, caching, and analytics',
-    longDescription: `Built a custom API gateway solution to handle authentication, rate limiting, request/response transformation, and analytics for a suite of microservices. The gateway processes millions of requests daily while maintaining low latency and high availability.
+    year: '2024',
+    description: 'AI-powered presentation generation tool built with Python for automated slide creation',
+    longDescription: `Ai-PowerPoint is an innovative AI-powered tool that demonstrates my expertise in Python development and artificial intelligence integration. This project showcases my ability to work with AI technologies and create practical automation solutions for content generation.
 
-    Implemented advanced features including intelligent caching, request routing based on content, circuit breakers for fault tolerance, and comprehensive API analytics. The gateway has become the central nervous system for all API traffic in the organization.`,
-    technologies: ['Node.js', 'Redis', 'nginx', 'PostgreSQL', 'Prometheus', 'Grafana'],
+    The application leverages artificial intelligence to automate the creation of PowerPoint presentations, streamlining the content creation process. This project highlights my skills in Python development, AI integration, and building tools that solve real-world productivity challenges.`,
+    technologies: ['Python', 'AI Integration', 'Automation', 'Content Generation', 'API Development'],
     features: [
-      'High-throughput request processing',
-      'Intelligent caching strategies',
-      'Dynamic rate limiting per client',
-      'Request/response transformation',
-      'Circuit breaker pattern implementation',
-      'Real-time API analytics',
-      'Multi-tenant authentication'
+      'AI-powered presentation generation',
+      'Automated slide content creation',
+      'Python-based application architecture',
+      'Intelligent content structuring',
+      'Streamlined presentation workflows',
+      'Integration with presentation formats'
     ],
     challenges: [
-      'Achieving sub-10ms response times',
-      'Handling traffic spikes gracefully',
-      'Implementing complex routing logic',
-      'Maintaining backward compatibility'
+      'Integrating AI models effectively',
+      'Creating intelligent content generation',
+      'Building user-friendly automation tools',
+      'Managing presentation format compatibility'
     ],
     achievements: [
-      'Processing 5M+ requests/day',
-      'Average response time under 8ms',
-      '99.99% uptime over 12 months',
-      '50% reduction in backend load'
+      'Successful AI-powered automation tool',
+      'Efficient Python implementation',
+      'Streamlined presentation creation process',
+      'Practical AI application development'
     ],
-    githubUrl: 'https://github.com/ammarhere02/api-gateway',
+    githubUrl: 'https://github.com/ammarhere02/Ai-PowerPoint',
     icon: Cpu
   },
   {
-    id: 'learning-management',
-    title: 'Learning Management System',
+    id: 'portfolio-foundation',
+    title: 'Early Web Development Projects',
     category: 'learning',
-    year: '2023',
-    description: 'Early full-stack project showcasing growth in backend development',
-    longDescription: `One of my early full-stack projects that marked my transition from frontend-focused development to backend specialization. Built a complete learning management system with user authentication, course management, progress tracking, and file uploads.
+    year: '2023-2024',
+    description: 'Foundation projects that shaped my journey from frontend to full-stack development',
+    longDescription: `This collection represents my early web development journey, where I built various projects that helped me understand fundamental programming concepts and web technologies. These projects were crucial in developing my problem-solving skills and understanding of software development principles.
 
-    This project was instrumental in deepening my understanding of backend architecture, database design, and API development. It showcased my ability to learn and implement complex features while maintaining clean, scalable code.`,
-    technologies: ['React', 'Node.js', 'Express', 'MongoDB', 'Multer', 'Cloudinary'],
+    Through building these applications, I gained experience with different technologies, learned to work with APIs, manage data, and create user-friendly interfaces. This foundation enabled my transition into more complex backend development and full-stack applications.`,
+    technologies: ['JavaScript', 'HTML5', 'CSS3', 'DOM Manipulation', 'Web APIs', 'Local Storage'],
     features: [
-      'User authentication and profiles',
-      'Course creation and management',
-      'Progress tracking and certificates',
-      'File upload and streaming',
-      'Discussion forums',
-      'Quiz and assessment system'
+      'Interactive web applications',
+      'Dynamic content management',
+      'Responsive user interfaces',
+      'Client-side data persistence',
+      'Modern JavaScript practices',
+      'Cross-browser compatibility'
     ],
     challenges: [
-      'Learning backend development patterns',
-      'Implementing file upload handling',
-      'Designing normalized database schema',
-      'Building RESTful API architecture'
+      'Learning JavaScript fundamentals',
+      'Understanding DOM manipulation',
+      'Creating responsive designs',
+      'Managing application state'
     ],
     achievements: [
-      'Successfully launched for 100+ students',
-      'Clean, maintainable codebase',
-      'Responsive design across all devices',
-      'Foundation for future backend expertise'
+      'Solid foundation in web development',
+      'Understanding of programming principles',
+      'Experience with multiple technologies',
+      'Bridge to backend development expertise'
     ],
-    githubUrl: 'https://github.com/ammarhere02/learning-management',
+    githubUrl: 'https://github.com/ammarhere02',
     icon: Code
   }
 ]

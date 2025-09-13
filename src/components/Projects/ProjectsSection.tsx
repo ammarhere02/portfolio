@@ -59,20 +59,36 @@ export default function ProjectsSection() {
         <div className="space-y-20">
           {sections.map((section, sectionIndex) => {
             const Icon = section.icon
-            
+
             return (
-              <div key={section.title}>
+              <motion.div
+                key={section.title}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: sectionIndex * 0.2,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 25
+                }}
+                viewport={{ once: true }}
+              >
                 <motion.div
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: sectionIndex * 0.1 }}
+                  transition={{ duration: 0.6, delay: sectionIndex * 0.1 + 0.2 }}
                   viewport={{ once: true }}
                   className="mb-12"
                 >
                   <div className="flex items-center space-x-4 mb-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${section.gradient} shadow-lg`}>
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`p-3 rounded-xl bg-gradient-to-r ${section.gradient} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+                    >
                       <Icon className="w-6 h-6 text-white" />
-                    </div>
+                    </motion.div>
                     <div>
                       <h3 className="text-2xl md:text-3xl font-bold text-secondary-900 dark:text-secondary-100">
                         {section.title}
@@ -87,7 +103,13 @@ export default function ProjectsSection() {
                   </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: sectionIndex * 0.1 + 0.4 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                >
                   {section.projects.map((project, projectIndex) => (
                     <ProjectCard
                       key={project.id}
@@ -95,8 +117,8 @@ export default function ProjectsSection() {
                       index={projectIndex}
                     />
                   ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )
           })}
         </div>
@@ -104,27 +126,47 @@ export default function ProjectsSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <div className="p-8 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-2xl">
-            <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="p-8 bg-gradient-to-r from-primary-50 via-blue-50 to-primary-50 dark:from-primary-900/20 dark:via-blue-900/20 dark:to-primary-900/20 rounded-2xl border border-primary-100 dark:border-primary-800/30 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <motion.h3
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4"
+            >
               Want to see more?
-            </h3>
-            <p className="text-secondary-600 dark:text-secondary-300 mb-6">
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-secondary-600 dark:text-secondary-300 mb-6"
+            >
               Check out my GitHub for additional projects, code samples, and contributions to open source.
-            </p>
-            <a
+            </motion.p>
+            <motion.a
               href="https://github.com/ammarhere02"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center space-x-2"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary inline-flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <span>Visit My GitHub</span>
-              <Code className="w-4 h-4" />
-            </a>
-          </div>
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Code className="w-4 h-4" />
+              </motion.div>
+            </motion.a>
+          </motion.div>
         </motion.div>
       </div>
     </section>
