@@ -25,7 +25,7 @@ export default function Navigation() {
   ]
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
+    const element = document.querySelector(href) as HTMLElement
     if (element) {
       const offsetTop = element.offsetTop - 80
       window.scrollTo({
