@@ -1,8 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Calendar } from 'lucide-react'
+import { ExternalLink, Github, Calendar, Play, Image as ImageIcon } from 'lucide-react'
 import { Project } from '@/utils/projectData'
+import { useState } from 'react'
+import ProjectMediaGallery from './ProjectMediaGallery'
 
 interface ProjectCardProps {
   project: Project
@@ -11,6 +13,46 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
   const Icon = project.icon
+  const [showGallery, setShowGallery] = useState(false)
+
+  // Create media items for Trainr project
+  const getProjectMedia = () => {
+    if (project.id === 'trainr-platform') {
+      return [
+        {
+          type: 'image' as const,
+          src: 'https://via.placeholder.com/800x600/4f46e5/ffffff?text=About+Page+-+Course+Publishing',
+          title: 'About Page - Course Publishing',
+          description: 'Teacher dashboard showing course publishing and about page management'
+        },
+        {
+          type: 'image' as const,
+          src: 'https://via.placeholder.com/800x600/7c3aed/ffffff?text=Course+Management+Dashboard',
+          title: 'Course Management Dashboard',
+          description: 'Complete course management interface with JavaScript and C++ courses'
+        },
+        {
+          type: 'image' as const,
+          src: 'https://via.placeholder.com/800x600/059669/ffffff?text=Student+Learning+Portal',
+          title: 'Student Learning Portal',
+          description: 'Student authentication and course access interface'
+        },
+        {
+          type: 'image' as const,
+          src: 'https://via.placeholder.com/800x600/dc2626/ffffff?text=Learning+Community',
+          title: 'Learning Community',
+          description: 'Community features with 2,847+ students and expert instructor rating'
+        },
+        {
+          type: 'video' as const,
+          src: '/placeholder-video',
+          title: 'Platform Demo Video',
+          description: 'Complete walkthrough of the Trainr educational platform'
+        }
+      ]
+    }
+    return []
+  }
 
   return (
     <motion.div
@@ -155,6 +197,18 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               <span className="text-sm font-medium">Demo</span>
             </motion.a>
           )}
+          {/* Show preview option for projects without GitHub */}
+          {!project.githubUrl && getProjectMedia().length > 0 && (
+            <motion.button
+              onClick={() => setShowGallery(true)}
+              whileHover={{ scale: 1.05, x: 2 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-secondary-50 dark:hover:bg-secondary-800/50 transition-all duration-200"
+            >
+              <ImageIcon className="w-4 h-4" />
+              <span className="text-sm font-medium">Preview</span>
+            </motion.button>
+          )}
         </div>
         <motion.button
           whileHover={{ scale: 1.05, x: 4 }}
@@ -171,6 +225,14 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           </motion.span>
         </motion.button>
       </div>
+
+      {/* Media Gallery Modal */}
+      <ProjectMediaGallery
+        isOpen={showGallery}
+        onClose={() => setShowGallery(false)}
+        projectTitle={project.title}
+        mediaItems={getProjectMedia()}
+      />
     </div>
     </motion.div>
   )

@@ -29,8 +29,8 @@ export default function AboutSection() {
     },
     {
       year: '2025',
-      title: 'Systems Architecture',
-      description: 'Currently designing enterprise-level systems, focusing on performance, security, and scalability. Leading backend architecture decisions.',
+      title: 'AI Integration & Systems Architecture',
+      description: 'Specializing in LLM integration, prompt engineering, and building AI-powered applications. Leading backend architecture decisions and implementing intelligent systems.',
       icon: Cloud,
       color: 'from-purple-500 to-pink-500'
     }
@@ -106,10 +106,11 @@ export default function AboutSection() {
                 </p>
                 
                 <p>
-                  Today, I specialize in building robust backend systems with Node.js, designing 
-                  secure authentication flows, optimizing database performance, and creating 
-                  APIs that developers love to work with. I'm based in San Francisco and always 
-                  excited about the next technical challenge.
+                  Today, I specialize in building robust backend systems with Node.js, designing
+                  secure authentication flows, optimizing database performance, and creating
+                  APIs that developers love to work with. Recently, I've been diving deep into
+                  AI integration, working with LLMs and prompt engineering. I'm based in Lahore,
+                  Punjab, Pakistan and always excited about the next technical challenge.
                 </p>
               </div>
             </div>

@@ -11,12 +11,12 @@ export default function Footer() {
     },
     {
       name: 'LinkedIn',
-      href: 'https://linkedin.com/in/ammarhere02',
+      href: 'https://www.linkedin.com/in/ammar-khan-7b656822a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
       icon: Linkedin,
     },
     {
       name: 'Email',
-      href: 'mailto:ammar@example.com',
+      href: 'mailto:ammarkhancloud@icloud.com',
       icon: Mail,
     },
   ]
@@ -28,11 +28,11 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold text-gradient mb-4">Ammar Khan</h3>
             <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-              Backend developer and systems architect specializing in scalable APIs and secure authentication systems.
+              Backend developer and AI integration specialist creating scalable systems and intelligent applications.
             </p>
             <div className="flex items-center text-secondary-600 dark:text-secondary-400">
               <MapPin className="w-4 h-4 mr-2" />
-              <span>San Francisco, CA</span>
+              <span>Lahore, Punjab, Pakistan</span>
             </div>
           </div>
 
@@ -53,7 +53,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">Connect</h4>
+            <h4 className="text-lg font-semibold mb-4">Let's Work Together</h4>
+            <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-4">
+              Available for consultation and freelance projects
+            </p>
             <div className="flex space-x-4">
               {socialLinks.map((link) => {
                 const Icon = link.icon

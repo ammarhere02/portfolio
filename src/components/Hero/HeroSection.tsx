@@ -8,9 +8,9 @@ import InteractiveTerminal from './InteractiveTerminal'
 export default function HeroSection() {
   const specialties = [
     'Backend Developer',
+    'AI Integration Specialist',
     'API Architect',
     'Database Designer',
-    'Security Engineer',
     'DevOps Enthusiast'
   ]
 
@@ -22,14 +22,39 @@ export default function HeroSection() {
   ]
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-16 px-4 sm:px-6 lg:px-8">
+    <section id="home" className="min-h-screen flex items-center justify-center pt-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/30 via-transparent to-blue-50/30 dark:from-primary-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+      <motion.div
+        className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-r from-primary-400/10 to-blue-400/10 rounded-full blur-3xl"
+        animate={{
+          x: [0, 100, 0],
+          y: [0, -50, 0],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl"
+        animate={{
+          x: [0, -80, 0],
+          y: [0, 60, 0],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-6 relative z-10"
           >
             <div className="space-y-4">
               <motion.h1 
@@ -57,26 +82,15 @@ export default function HeroSection() {
               </motion.div>
             </div>
 
-            <motion.p 
+            <motion.p
               className="text-lg md:text-xl text-secondary-600 dark:text-secondary-300 max-w-2xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              I'm a passionate backend developer and full-stack engineer based in{' '}
-              <span className="font-semibold text-secondary-800 dark:text-secondary-100">San Francisco</span>.
-              I specialize in building robust, scalable APIs and secure authentication systems that power modern applications.
-            </motion.p>
-
-            <motion.p 
-              className="text-base md:text-lg text-secondary-600 dark:text-secondary-400 max-w-2xl leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-            >
-              Over my development journey, I've mastered the art of turning complex business logic into clean, 
-              maintainable code. From Node.js microservices to comprehensive database architectures, 
-              I love solving challenging problems and building systems that just work.
+              Backend developer and AI integration specialist from{' '}
+              <span className="font-semibold text-secondary-800 dark:text-secondary-100">Lahore, Pakistan</span>.
+              Building scalable APIs, secure authentication systems, and AI-powered applications.
             </motion.p>
 
             <motion.div 
@@ -107,12 +121,12 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.3 }}
             >
-              <button className="btn-primary">
+              <a href="#projects" className="btn-primary">
                 View My Projects
-              </button>
-              <button className="btn-secondary">
-                Download Resume
-              </button>
+              </a>
+              <a href="#contact" className="btn-secondary">
+                Get In Touch
+              </a>
             </motion.div>
           </motion.div>
 
@@ -120,7 +134,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative"
+            className="relative z-10"
           >
             <div className="card p-0 overflow-hidden">
               <InteractiveTerminal />
