@@ -15,7 +15,59 @@ export default function InteractiveTerminal() {
   const [currentCommandText, setCurrentCommandText] = useState('')
   const [showOutput, setShowOutput] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
+  const [userInput, setUserInput] = useState('')
+  const [userCommands, setUserCommands] = useState<{command: string, output: string}[]>([])
+  const [showUserPrompt, setShowUserPrompt] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.querySelector(sectionId) as HTMLElement
+    if (element) {
+      const offsetTop = element.offsetTop - 80
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      })
+    }
+  }
+
+  const handleUserCommand = (command: string) => {
+    const cmd = command.trim().toLowerCase()
+    let output = ''
+
+    if (cmd === 'projects') {
+      output = 'Navigating to projects section...'
+      setTimeout(() => scrollToSection('#projects'), 1000)
+    } else if (cmd === 'contact') {
+      output = 'Navigating to contact section...'
+      setTimeout(() => scrollToSection('#contact'), 1000)
+    } else if (cmd === 'ls') {
+      output = 'projects/  about/  contact/  skills.json  README.md'
+    } else if (cmd.startsWith('cd ')) {
+      const dir = cmd.split(' ')[1]
+      if (dir === 'projects') {
+        output = 'Navigating to projects section...'
+        setTimeout(() => scrollToSection('#projects'), 1000)
+      } else if (dir === 'contact') {
+        output = 'Navigating to contact section...'
+        setTimeout(() => scrollToSection('#contact'), 1000)
+      } else if (dir === 'about') {
+        output = 'Navigating to about section...'
+        setTimeout(() => scrollToSection('#about'), 1000)
+      } else {
+        output = `cd: ${dir}: No such file or directory`
+      }
+    } else if (cmd === 'cd') {
+      output = 'Usage: cd <directory> (try: projects, contact, about)'
+    } else if (cmd === 'clear') {
+      setUserCommands([])
+      return
+    } else {
+      output = 'psych! no command found'
+    }
+
+    setUserCommands(prev => [...prev, { command, output }])
+  }
 
   const terminalSequence: TerminalLine[] = [
     {
@@ -96,21 +148,35 @@ export default function InteractiveTerminal() {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight
     }
-  }, [currentLineIndex, showOutput])
+  }, [currentLineIndex, showOutput, userCommands, showUserPrompt])
 
   const resetAnimation = () => {
     setCurrentLineIndex(0)
     setCurrentCommandText('')
     setShowOutput(false)
     setIsTyping(false)
+    setShowUserPrompt(false)
+    setUserCommands([])
+    setUserInput('')
   }
 
   useEffect(() => {
     if (currentLineIndex >= terminalSequence.length) {
-      const resetTimer = setTimeout(resetAnimation, 3000)
+      setShowUserPrompt(true)
+      const resetTimer = setTimeout(resetAnimation, 15000) // Longer delay to allow interaction
       return () => clearTimeout(resetTimer)
     }
   }, [currentLineIndex])
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const command = userInput.trim()
+      if (command) {
+        handleUserCommand(command)
+        setUserInput('')
+      }
+    }
+  }
 
   return (
     <div className="bg-gray-900 rounded-lg overflow-hidden shadow-2xl">
@@ -209,6 +275,56 @@ export default function InteractiveTerminal() {
                 )}
               </AnimatePresence>
             </div>
+          )}
+
+          {/* User Commands History */}
+          {userCommands.map((userCmd, index) => (
+            <div key={`user-${index}`} className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-400">ammar@macbook</span>
+                <span className="text-gray-500">:</span>
+                <span className="text-purple-400">~</span>
+                <span className="text-gray-500">$</span>
+                <span className="text-white">{userCmd.command}</span>
+              </div>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-green-400 pl-4"
+              >
+                {userCmd.output}
+              </motion.div>
+            </div>
+          ))}
+
+          {/* Interactive User Prompt */}
+          {showUserPrompt && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center space-x-2"
+            >
+              <span className="text-blue-400">ammar@macbook</span>
+              <span className="text-gray-500">:</span>
+              <span className="text-purple-400">~</span>
+              <span className="text-gray-500">$</span>
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="bg-transparent text-white outline-none flex-1 caret-green-400"
+                placeholder="Try: projects, contact, ls, cd projects"
+                autoFocus
+              />
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="text-green-400"
+              >
+                _
+              </motion.span>
+            </motion.div>
           )}
         </div>
       </div>

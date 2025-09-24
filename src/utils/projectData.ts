@@ -87,7 +87,7 @@ export const projects: Project[] = [
       'Redesigned and improved user interface/experience',
       'Platform now supports 2,847+ students with 4.9/5 rating'
     ],
-    imageUrl: '/docs/trainr-preview.png',
+    imageUrl: '/images/trainr-1.png',
     icon: Brain
   },
   {

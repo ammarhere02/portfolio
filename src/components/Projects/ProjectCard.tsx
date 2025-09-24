@@ -77,6 +77,20 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       <div className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500 bg-gradient-to-br from-primary-400 via-transparent to-blue-400 pointer-events-none" />
 
       <div className="relative z-10">
+        {/* Project Image Preview */}
+        {project.imageUrl && (
+          <div className="mb-4 rounded-lg overflow-hidden">
+            <img
+              src={project.imageUrl}
+              alt={`${project.title} preview`}
+              className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+              }}
+            />
+          </div>
+        )}
+
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             <motion.div

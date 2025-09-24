@@ -40,76 +40,42 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary-50 dark:bg-secondary-800/50">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">
             <span className="text-gradient">Featured Projects</span>
           </h2>
           <p className="text-xl text-secondary-600 dark:text-secondary-300 max-w-3xl mx-auto leading-relaxed">
-            Below are some of the projects I've built, showcasing my evolution from curious beginner 
+            Below are some of the projects I've built, showcasing my evolution from curious beginner
             to specialized backend architect. Each project solved real problems and taught me valuable lessons.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="space-y-20">
+        <div className="space-y-24">
           {sections.map((section, sectionIndex) => {
             const Icon = section.icon
 
             return (
-              <motion.div
-                key={section.title}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.8,
-                  delay: sectionIndex * 0.2,
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 25
-                }}
-                viewport={{ once: true }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: sectionIndex * 0.1 + 0.2 }}
-                  viewport={{ once: true }}
-                  className="mb-12"
-                >
-                  <div className="flex items-center space-x-4 mb-4">
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`p-3 rounded-xl bg-gradient-to-r ${section.gradient} shadow-lg hover:shadow-xl transition-shadow duration-300`}
-                    >
+              <div key={section.title}>
+                <div className="mb-16">
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className={`p-3 rounded-xl bg-gradient-to-r ${section.gradient} shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105`}>
                       <Icon className="w-6 h-6 text-white" />
-                    </motion.div>
+                    </div>
                     <div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-secondary-900 dark:text-secondary-100">
+                      <h3 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100">
                         {section.title}
                       </h3>
-                      <p className="text-primary-600 dark:text-primary-400 font-medium">
+                      <p className="text-primary-600 dark:text-primary-400 font-medium text-lg">
                         {section.subtitle}
                       </p>
                     </div>
                   </div>
-                  <p className="text-secondary-600 dark:text-secondary-400 text-lg max-w-3xl">
+                  <p className="text-secondary-600 dark:text-secondary-400 text-lg max-w-4xl leading-relaxed">
                     {section.description}
                   </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: sectionIndex * 0.1 + 0.4 }}
-                  viewport={{ once: true }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {section.projects.map((project, projectIndex) => (
                     <ProjectCard
                       key={project.id}
@@ -117,57 +83,31 @@ export default function ProjectsSection() {
                       index={projectIndex}
                     />
                   ))}
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             )
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="p-8 bg-gradient-to-r from-primary-50 via-blue-50 to-primary-50 dark:from-primary-900/20 dark:via-blue-900/20 dark:to-primary-900/20 rounded-2xl border border-primary-100 dark:border-primary-800/30 shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <motion.h3
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4"
-            >
+        <div className="text-center mt-20">
+          <div className="p-8 bg-gradient-to-r from-primary-50 via-blue-50 to-primary-50 dark:from-primary-900/20 dark:via-blue-900/20 dark:to-primary-900/20 rounded-2xl border border-primary-100 dark:border-primary-800/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
               Want to see more?
-            </motion.h3>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-secondary-600 dark:text-secondary-300 mb-6"
-            >
+            </h3>
+            <p className="text-secondary-600 dark:text-secondary-300 mb-6">
               Check out my GitHub for additional projects, code samples, and contributions to open source.
-            </motion.p>
-            <motion.a
+            </p>
+            <a
               href="https://github.com/ammarhere02"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn-primary inline-flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="btn-primary inline-flex items-center space-x-2 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
               <span>Visit My GitHub</span>
-              <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Code className="w-4 h-4" />
-              </motion.div>
-            </motion.a>
-          </motion.div>
-        </motion.div>
+              <Code className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   )
