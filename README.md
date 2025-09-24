@@ -149,20 +149,6 @@ This project is configured for easy deployment on Vercel:
 
 For other platforms, run `npm run build` and deploy the `.next` folder.
 
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## 🙏 Acknowledgments
 
 - [Next.js](https://nextjs.org/) for the amazing React framework
@@ -170,6 +156,3 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
 - [Framer Motion](https://www.framer.com/motion/) for smooth animations
 
-
-
-⭐ If you found this portfolio helpful, please give it a star on GitHub!
