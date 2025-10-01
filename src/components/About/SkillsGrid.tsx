@@ -12,7 +12,9 @@ export default function SkillsGrid() {
     'JWT & OAuth 2.0',
     'Docker & AWS',
     'React & Next.js',
-    'AI/LLM Integration'
+    'AI/LLM Integration',
+    'Python & FastAPI',
+    'n8n Workflow Automation'
   ]
 
   const technologies = {
@@ -86,15 +88,15 @@ export default function SkillsGrid() {
             <div className="space-y-4">
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  3+
+                  2+
                 </div>
                 <div className="text-secondary-600 dark:text-secondary-400">
-                  Backend Development
+                  Development Experience
                 </div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-secondary-600 dark:text-secondary-400 mb-2">
-                  15+
+                  10+
                 </div>
                 <div className="text-secondary-600 dark:text-secondary-400">
                   Projects Completed
