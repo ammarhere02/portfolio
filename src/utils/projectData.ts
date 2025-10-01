@@ -19,40 +19,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 'ai-chat-system',
-    title: 'AI Chat Integration System',
-    category: 'recent',
-    year: '2025',
-    description: 'Advanced LLM integration platform with prompt engineering and RAG implementation for intelligent conversations',
-    longDescription: `AI Chat Integration System is a cutting-edge platform showcasing my expertise in LLM integration, prompt engineering, and Retrieval-Augmented Generation (RAG). Built with Node.js and modern AI APIs, this project demonstrates my ability to create intelligent conversational systems.
-
-    The system features advanced prompt engineering techniques, contextual understanding, and seamless integration with multiple LLM providers. It highlights my specialization in AI/ML integration and my ability to build sophisticated backend systems that leverage artificial intelligence.`,
-    technologies: ['Node.js', 'OpenAI API', 'Claude API', 'LLM Integration', 'Prompt Engineering', 'RAG Systems', 'Vector Databases'],
-    features: [
-      'Multi-LLM provider integration (OpenAI, Claude, etc.)',
-      'Advanced prompt engineering and optimization',
-      'RAG (Retrieval-Augmented Generation) implementation',
-      'Context-aware conversation management',
-      'Real-time AI response streaming',
-      'Custom training data integration',
-      'Performance monitoring and analytics'
-    ],
-    challenges: [
-      'Optimizing prompt engineering for various use cases',
-      'Implementing efficient RAG systems',
-      'Managing multiple LLM provider APIs',
-      'Building context-aware conversation flows'
-    ],
-    achievements: [
-      'Successfully deployed intelligent chat system',
-      'Optimized AI response quality through prompt engineering',
-      'Implemented efficient RAG for enhanced context',
-      'Created scalable AI integration architecture'
-    ],
-    githubUrl: 'https://github.com/ammarhere02/ai-chat-system',
-    icon: Bot
-  },
-  {
     id: 'trainr-platform',
     title: 'Trainr - Educational Learning Platform',
     category: 'featured',
