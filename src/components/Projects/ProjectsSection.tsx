@@ -29,7 +29,12 @@ export default function ProjectsSection() {
           {lead && <ProjectCard project={lead} index={0} wide />}
 
           {rest.length > 0 && (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div
+              className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${
+                /* Three secondary projects sit better as a row than as 2 + an orphan. */
+                rest.length % 2 === 1 ? 'lg:grid-cols-3' : ''
+              }`}
+            >
               {rest.map((project, i) => (
                 <ProjectCard key={project.id} project={project} index={i + 1} />
               ))}

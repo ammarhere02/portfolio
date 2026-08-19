@@ -1,13 +1,12 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/hooks/useTheme'
 import { duration, ease } from '@/lib/motion'
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme()
-  const reduced = useReducedMotion()
   const Icon = theme === 'dark' ? Sun : Moon
 
   return (
@@ -20,9 +19,9 @@ export default function ThemeToggle() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={theme}
-          initial={reduced ? false : { rotate: -60, opacity: 0, scale: 0.7 }}
+          initial={{ rotate: -60, opacity: 0, scale: 0.7 }}
           animate={{ rotate: 0, opacity: 1, scale: 1 }}
-          exit={reduced ? undefined : { rotate: 60, opacity: 0, scale: 0.7 }}
+          exit={{ rotate: 60, opacity: 0, scale: 0.7 }}
           transition={{ duration: duration.fast, ease: ease.out }}
           className="absolute grid place-items-center"
         >

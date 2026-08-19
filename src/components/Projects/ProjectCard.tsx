@@ -1,10 +1,10 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ArrowUpRight, Github } from 'lucide-react'
 import { getProjectCover, type Project } from '@/utils/projectData'
+import ProjectThumbnail from './ProjectThumbnail'
 import { RevealItem } from '@/components/motion/Reveal'
 import { duration, ease } from '@/lib/motion'
 
@@ -17,13 +17,12 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, index, wide = false }: ProjectCardProps) {
   const Icon = project.icon
-  const reduced = useReducedMotion()
   const cover = getProjectCover(project)
 
   return (
     <RevealItem as="article" className="group h-full">
       <motion.div
-        whileHover={reduced ? undefined : { y: -4 }}
+        whileHover={{ y: -4 }}
         transition={{ duration: duration.fast, ease: ease.out }}
         className={`relative flex h-full overflow-hidden rounded-card border border-line
                     bg-surface transition-colors duration-300 group-hover:border-line-strong ${
@@ -31,29 +30,22 @@ export default function ProjectCard({ project, index, wide = false }: ProjectCar
                     }`}
       >
         <div
-          className={`relative overflow-hidden bg-surface-2 ${
+          className={`relative overflow-hidden ${
             wide
-              ? 'aspect-[16/9] border-b border-line lg:aspect-auto lg:w-[58%] lg:border-b-0 lg:border-r'
-              : 'aspect-[16/9] border-b border-line'
+              ? 'aspect-[16/10] border-b border-line lg:aspect-auto lg:w-[56%] lg:border-b-0 lg:border-r'
+              : 'aspect-[16/10] border-b border-line'
           }`}
         >
-          {cover ? (
-            <Image
-              src={cover}
-              alt=""
-              fill
-              sizes={wide ? '(max-width: 1024px) 100vw, 760px' : '(max-width: 768px) 100vw, 620px'}
-              className="object-cover object-top transition-transform duration-700 ease-out
-                         group-hover:scale-[1.03]"
-            />
-          ) : (
-            <span className="flex h-full items-center justify-center">
-              <Icon className="h-9 w-9 text-fg-subtle" />
-            </span>
-          )}
+          <ProjectThumbnail
+            src={cover}
+            icon={Icon}
+            fit={project.coverFit}
+            sizes={wide ? '(max-width: 1024px) 100vw, 700px' : '(max-width: 768px) 100vw, 580px'}
+            priority={wide}
+          />
         </div>
 
-        <div className={`flex flex-1 flex-col ${wide ? 'p-6 lg:p-8' : 'p-6'}`}>
+        <div className={`flex flex-1 flex-col ${wide ? 'p-7 lg:p-10' : 'p-6'}`}>
           <div className="flex items-baseline justify-between gap-4">
             <span className="font-mono text-2xs text-fg-subtle">
               {String(index + 1).padStart(2, '0')}
@@ -61,7 +53,7 @@ export default function ProjectCard({ project, index, wide = false }: ProjectCar
             <span className="font-mono text-2xs text-fg-subtle">{project.year}</span>
           </div>
 
-          <h3 className={`mt-3 font-medium text-fg ${wide ? 'text-2xl' : 'text-xl'}`}>
+          <h3 className={`mt-5 font-medium text-fg ${wide ? 'text-3xl' : 'text-xl'}`}>
             {/* The heading link is the real target; the cover above just decorates it. */}
             <Link
               href={`/projects/${project.id}`}
@@ -71,28 +63,30 @@ export default function ProjectCard({ project, index, wide = false }: ProjectCar
             </Link>
           </h3>
 
-          <p className={`mt-3 text-fg-muted ${wide ? 'text-base' : 'text-sm'}`}>{project.summary}</p>
+          <p className={`mt-4 max-w-prose text-fg-muted ${wide ? 'text-base' : 'text-sm'}`}>
+            {project.summary}
+          </p>
 
           {project.outcome.length > 0 && (
-            <p className="mt-6 border-l-2 border-accent pl-4 text-sm text-fg">
+            <p className="mt-7 border-l-2 border-accent pl-4 text-sm text-fg">
               {project.outcome[0]}
             </p>
           )}
 
-          <div className="mt-6 flex flex-wrap gap-1.5">
-            {project.technologies.slice(0, wide ? 8 : 5).map((tech) => (
+          <div className="mt-7 flex flex-wrap gap-1.5">
+            {project.technologies.slice(0, wide ? 6 : 4).map((tech) => (
               <span key={tech} className="tag">
                 {tech}
               </span>
             ))}
-            {project.technologies.length > (wide ? 8 : 5) && (
+            {project.technologies.length > (wide ? 6 : 4) && (
               <span className="tag border-transparent bg-transparent">
-                +{project.technologies.length - (wide ? 8 : 5)}
+                +{project.technologies.length - (wide ? 6 : 4)}
               </span>
             )}
           </div>
 
-          <div className="relative z-10 mt-auto flex items-center gap-5 pt-6">
+          <div className="relative z-10 mt-auto flex items-center gap-5 pt-8">
             <Link
               href={`/projects/${project.id}`}
               className="inline-flex items-center gap-1.5 text-sm text-accent"

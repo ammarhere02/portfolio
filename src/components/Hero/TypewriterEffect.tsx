@@ -23,6 +23,11 @@ export default function TypewriterEffect({
   const [text, setText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
+  // Reduced motion: settle on the first phrase instead of typing.
+  useEffect(() => {
+    if (reduced) setText(texts[0])
+  }, [reduced, texts])
+
   useEffect(() => {
     if (reduced) return
 
@@ -51,11 +56,6 @@ export default function TypewriterEffect({
     return () => clearTimeout(timer)
   }, [text, index, isDeleting, texts, typingSpeed, deletingSpeed, pauseDuration, reduced])
 
-  // Screen readers get the full list once; the animation itself is decorative.
-  if (reduced) {
-    return <span className={className}>{texts[0]}</span>
-  }
-
   return (
     <>
       <span className={className} aria-hidden="true">
@@ -64,6 +64,7 @@ export default function TypewriterEffect({
           _
         </span>
       </span>
+      {/* Screen readers get the full list once; the typing itself is decorative. */}
       <span className="sr-only">{texts.join(', ')}</span>
     </>
   )

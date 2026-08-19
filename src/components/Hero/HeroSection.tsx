@@ -33,7 +33,7 @@ export default function HeroSection() {
 
   return (
     <section id="home" ref={ref} className="relative pb-section pt-32 md:pt-40">
-      <motion.div className="shell" style={reduced ? undefined : { y, opacity }}>
+      <motion.div className="shell" style={{ y, opacity }}>
         <RevealGroup interval={0.09}>
           <RevealItem className="flex items-center gap-2.5">
             <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
@@ -119,7 +119,7 @@ export default function HeroSection() {
         transition={{ delay: 1.2, duration: duration.slow, ease: ease.out }}
       >
         <motion.span
-          animate={reduced ? undefined : { y: [0, 5, 0] }}
+          animate={{ y: [0, 5, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: ease.inOut }}
           className="text-fg-subtle"
         >

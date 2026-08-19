@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
+import { MotionConfig } from 'framer-motion'
 
 export type Theme = 'light' | 'dark'
 
@@ -62,5 +63,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme])
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider value={value}>
+      {/* "user" makes Framer Motion honour prefers-reduced-motion internally, so
+          components never branch on it during render and hydration stays stable. */}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </ThemeContext.Provider>
+  )
 }

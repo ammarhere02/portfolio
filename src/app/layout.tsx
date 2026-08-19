@@ -73,11 +73,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} ${mono.variable}`}
-    >
+    // Font variables live on <body>, not <html>: the pre-paint script writes the
+    // theme class onto <html>, and React would reconcile that className away on
+    // hydration if it also owned it.
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script
@@ -85,7 +84,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body className="bg-canvas text-ink-800 antialiased dark:text-ink-200">
+      <body
+        className={`${display.variable} ${sans.variable} ${mono.variable}
+                    bg-canvas text-fg antialiased`}
+      >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

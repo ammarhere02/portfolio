@@ -1,7 +1,17 @@
 'use client'
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { fadeUp, stagger, viewport } from '@/lib/motion'
+
+/**
+ * These render identically on the server and on the first client render —
+ * no branching on `useReducedMotion`, which would change the DOM between the
+ * two and break hydration. Reduced motion is handled globally by the
+ * `MotionConfig reducedMotion="user"` wrapper in ThemeProvider, plus the
+ * transition override in globals.css.
+ */
+
+type Tag = 'div' | 'section' | 'header' | 'li' | 'article' | 'span' | 'figure'
 
 interface RevealProps {
   children?: React.ReactNode
@@ -9,13 +19,9 @@ interface RevealProps {
   /** Seconds to wait before this element animates in. */
   delay?: number
   variants?: Variants
-  as?: 'div' | 'section' | 'header' | 'li' | 'article' | 'span' | 'figure'
+  as?: Tag
 }
 
-/**
- * Scroll-triggered reveal. When the visitor prefers reduced motion the element
- * renders in its final state with no transform, rather than not rendering.
- */
 export function Reveal({
   children,
   className,
@@ -23,10 +29,7 @@ export function Reveal({
   variants = fadeUp,
   as = 'div',
 }: RevealProps) {
-  const reduced = useReducedMotion()
   const Component = motion[as]
-
-  if (reduced) return <Component className={className}>{children}</Component>
 
   return (
     <Component
@@ -59,10 +62,7 @@ export function RevealGroup({
   delay = 0,
   as = 'div',
 }: RevealGroupProps) {
-  const reduced = useReducedMotion()
   const Component = motion[as]
-
-  if (reduced) return <Component className={className}>{children}</Component>
 
   return (
     <Component
@@ -90,10 +90,7 @@ export function RevealItem({
   variants = fadeUp,
   as = 'div',
 }: RevealItemProps) {
-  const reduced = useReducedMotion()
   const Component = motion[as]
-
-  if (reduced) return <Component className={className}>{children}</Component>
 
   return (
     <Component className={className} variants={variants}>

@@ -1,4 +1,4 @@
-import { Brain, Code, Cpu, Database, Globe, Network, Server } from 'lucide-react'
+import { Brain, Code, Cpu, Database, Globe, Network, Server, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 export interface MediaItem {
@@ -30,6 +30,11 @@ export interface Project {
   challenges: string[]
   githubUrl?: string
   liveUrl?: string
+  /** Card image. Falls back to the first video poster, then the first still. */
+  cover?: string
+  /** 'window' frames the cover as a browser; 'contain' suits diagrams and posters. */
+  coverFit?: 'window' | 'contain'
+  /** Screenshots and demo clips shown on the case-study page. */
   media?: MediaItem[]
   icon: LucideIcon
 }
@@ -95,6 +100,20 @@ export const projects: Project[] = [
     media: [
       {
         type: 'image',
+        src: '/projects/neuroforce/09-architecture-flow.webp',
+        title: 'Architecture and stack',
+        description:
+          'Request path from the React client through the Node core to the Python services, with the scoring formula at the bottom.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/10-component-map.webp',
+        title: 'Component map',
+        description:
+          'The three services feeding the core, and what each one hands to the data layer.',
+      },
+      {
+        type: 'image',
         src: '/projects/neuroforce/01-landing.webp',
         title: 'Landing and sign-in',
         description: 'GitHub OAuth or email, with the workspace pitch alongside.',
@@ -148,6 +167,8 @@ export const projects: Project[] = [
       },
     ],
     liveUrl: 'https://neuroforc.me',
+    cover: '/projects/neuroforce/09-architecture-flow.webp',
+    coverFit: 'contain',
     icon: Network,
   },
   {
@@ -295,6 +316,92 @@ export const projects: Project[] = [
     icon: Cpu,
   },
   {
+    id: 'trecommendor',
+    title: 'Trecommendor',
+    category: 'featured',
+    year: '2025',
+    summary:
+      'A semantic recommendation engine for 8,800 Netflix titles — built after the conventional ML approach failed, and rebuilt on sentence-transformer embeddings.',
+    role: 'Solo project',
+    problem:
+      'The goal was a recommender over Netflix’s catalogue, but the dataset fought back: roughly 30% of directors missing, 10% of cast and country missing, and several columns holding comma-separated lists that broke aggregation outright. The obvious modelling route turned out to be the wrong one, and finding that out was most of the work.',
+    approach: [
+      'Profiled the dataset first and documented what was actually usable — which columns were complete, which were multi-valued, and where `explode()` failed on nulls.',
+      'Tried the conventional route: a Random Forest regressor predicting content rating from duration, release year, and encoded country.',
+      'Measured it honestly rather than tuning around it — RMSE 1.13, R² 0.02. The model explained 2% of variance.',
+      'Diagnosed the cause instead of swapping algorithms: rating is a category (TV-MA, PG-13), not a continuous value, so regression was the wrong frame; and the numeric features carried no signal about it. The dataset simply lacked the review and engagement data the target depends on.',
+      'Pivoted to the one field with no missing values — the description text. Encoded every title with the all-MiniLM-L6-v2 sentence transformer into 384-dimension embeddings.',
+      'Served recommendations with K-nearest-neighbours over cosine similarity, returning the five closest titles by meaning rather than by feature distance.',
+      'Wrapped it in a small Flask API — recommend, search, popular, and stats endpoints — behind a browsable frontend.',
+    ],
+    outcome: [
+      'Working semantic recommender: querying “Narcos” returns El Chapo, Drug Lords, The Mechanism, ZeroZeroZero, and Fearless.',
+      'Embeddings sidestep the missing-data problem entirely, since descriptions are complete across all 8,800 rows.',
+      'The failed regression is kept in the notebook with its numbers and the reasoning, rather than deleted.',
+      'Full EDA on genre, country, director, and release-year distribution, with the charts to back it.',
+    ],
+    technologies: [
+      'Python',
+      'Sentence Transformers',
+      'scikit-learn',
+      'pandas',
+      'NumPy',
+      'Matplotlib',
+      'Seaborn',
+      'Flask',
+      'Jupyter',
+    ],
+    features: [
+      'Semantic recommendations from 384-dimension description embeddings',
+      'KNN retrieval over cosine similarity',
+      'Exploratory analysis across genre, country, director, and year',
+      'Flask API with recommend, search, popular, and stats endpoints',
+      'Documented Random Forest baseline and why it was abandoned',
+    ],
+    challenges: [
+      'Recognising that a poor score meant the wrong problem framing, not a worse model',
+      'Aggregating multi-valued columns without tripping over nulls',
+      'Choosing a feature set robust to 30% missing data',
+    ],
+    media: [
+      {
+        type: 'image',
+        src: '/projects/trecommendor/01-genre-country-heatmap.webp',
+        title: 'Genre against country',
+        description:
+          'Where each catalogue region concentrates — India on international movies and dramas, the US spread broadly across genres.',
+      },
+      {
+        type: 'image',
+        src: '/projects/trecommendor/02-content-growth.webp',
+        title: 'Catalogue growth by year',
+        description: 'Additions climb sharply from 2015 and peak in 2019.',
+      },
+      {
+        type: 'image',
+        src: '/projects/trecommendor/03-top-countries.webp',
+        title: 'Top producing countries',
+        description: 'Content volume by country of production.',
+      },
+      {
+        type: 'image',
+        src: '/projects/trecommendor/04-top-genres.webp',
+        title: 'Genre distribution',
+        description: 'The ten most common categories across the catalogue.',
+      },
+      {
+        type: 'image',
+        src: '/projects/trecommendor/05-top-directors.webp',
+        title: 'Most frequent directors',
+        description: 'Directors by title count, from the 70% of rows where the field is populated.',
+      },
+    ],
+    githubUrl: 'https://github.com/ammarhere02/Trecommendor',
+    cover: '/projects/trecommendor/01-genre-country-heatmap.webp',
+    coverFit: 'contain',
+    icon: Sparkles,
+  },
+  {
     id: 'movie-reserve',
     title: 'Movie-Reserve',
     category: 'recent',
@@ -425,6 +532,7 @@ export const getProjectById = (id: string) => projects.find((project) => project
  * then fall back to the first still. Undefined when a project has no media.
  */
 export const getProjectCover = (project: Project) => {
+  if (project.cover) return project.cover
   const poster = project.media?.find((item) => item.type === 'video' && item.poster)?.poster
   return poster ?? project.media?.find((item) => item.type === 'image')?.src
 }

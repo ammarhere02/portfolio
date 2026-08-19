@@ -59,7 +59,7 @@ export default function MagneticLink({
       onMouseMove={handleMove}
       onMouseLeave={reset}
       onClick={onClick}
-      style={reduced ? undefined : { x: springX, y: springY }}
+      style={{ x: springX, y: springY }}
       {...externalProps}
     >
       {children}

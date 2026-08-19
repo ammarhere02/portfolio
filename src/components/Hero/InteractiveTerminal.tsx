@@ -158,9 +158,9 @@ export default function InteractiveTerminal() {
     lines.map((line, i) => (
       <motion.div
         key={`${key}-${i}`}
-        initial={reduced ? false : { opacity: 0, x: -6 }}
+        initial={{ opacity: 0, x: -6 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: reduced ? 0 : i * 0.045, duration: 0.28 }}
+        transition={{ delay: i * 0.045, duration: 0.28 }}
         className="whitespace-pre-wrap break-words text-ink-300"
       >
         {line}
