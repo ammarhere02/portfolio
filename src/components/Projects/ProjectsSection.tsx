@@ -10,7 +10,7 @@ import { getProjectsByCategory } from '@/utils/projectData'
 import { site } from '@/lib/site'
 
 export default function ProjectsSection() {
-  const featured = getProjectsByCategory('featured')
+  const [lead, ...rest] = getProjectsByCategory('featured')
   const recent = getProjectsByCategory('recent')
   const learning = getProjectsByCategory('learning')
 
@@ -21,15 +21,21 @@ export default function ProjectsSection() {
           index="03"
           label="Selected work"
           title="Things I built, and what they taught me."
-          intro="Each of these solved a real problem for someone. The two below get the most space because they were the hardest."
+          intro="Each of these solved a real problem for someone. The ones with the most space were the hardest to build."
         />
 
-        {/* Featured: given room, two-up */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-6">
-          {featured.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
-          ))}
-        </div>
+        {/* The lead project runs full width; the rest sit two-up beneath it. */}
+        <RevealGroup interval={0.08} className="space-y-6">
+          {lead && <ProjectCard project={lead} index={0} wide />}
+
+          {rest.length > 0 && (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {rest.map((project, i) => (
+                <ProjectCard key={project.id} project={project} index={i + 1} />
+              ))}
+            </div>
+          )}
+        </RevealGroup>
 
         {/* Everything else: a scannable index rather than more identical cards */}
         <div className="mt-24">

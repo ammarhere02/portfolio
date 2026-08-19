@@ -1,4 +1,4 @@
-import { Brain, Code, Cpu, Database, Globe, Server } from 'lucide-react'
+import { Brain, Code, Cpu, Database, Globe, Network, Server } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 export interface MediaItem {
@@ -35,6 +35,121 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: 'neuroforce',
+    title: 'NeuroForce',
+    category: 'featured',
+    year: '2025',
+    summary:
+      'An AI workforce platform for hybrid teams — facial-recognition attendance, RAG-based productivity scoring, and Kanban tasks driven by GitHub and Discord.',
+    role: 'Final year project · Solo build — system design and implementation, with Claude Code',
+    problem:
+      'Hybrid teams get monitored by tools that are either fragmented across half a dozen subscriptions or invasive enough to destroy trust — random screenshots, keylogging, continuous camera access. The brief was to build something that produces real workforce visibility without any of that, and to make it affordable enough for a small company to actually run.',
+    approach: [
+      'Designed a service-oriented architecture: a React 18 + Vite dashboard, a Node.js/Express core on port 3000, and three Python services — face recognition on 8000, a RAG analytics service on 8001, and Discord/OAuth integration.',
+      'Routed every cross-module message through a Node EventEmitter EventBus, so attendance, tasks, integrations, and notifications stay decoupled. Documented Redis + BullMQ as the migration path once the backend needs to run distributed.',
+      'Split storage by access pattern — MySQL with Prisma for the 15-model relational schema, Qdrant for 128-dimension face embeddings where similarity search returns in under 10ms. A single relational store could not do both well.',
+      'Built attendance on InsightFace embeddings rather than stored images, so recognition works without keeping photographs of anyone.',
+      'Scored productivity with a weighted attendance-and-reliability formula, then generated the written appraisal through a RAG pipeline — Gemma 4 via Ollama with MiniLM embeddings — so insight text is grounded in each person’s actual record.',
+      'Wired the task board to the tools developers already have open: a GitHub commit tagged with a task ID moves its Kanban card, and Discord slash commands create and assign work. Webhooks are verified with HMAC-SHA256 and EdDSA.',
+      'Kept the privacy line explicit in scope — no keystroke logging, no continuous facial surveillance, GDPR-aligned minimisation and revocable consent.',
+    ],
+    outcome: [
+      'Working platform across both roles: admin and employee dashboards, attendance, Kanban, integrations, productivity scoring, appraisals, and requests.',
+      'Facial recognition at 90%+ accuracy, with sub-10ms embedding lookups from Qdrant.',
+      'GitHub and Discord integration verified end to end — a tagged commit updates the board and posts to Discord automatically.',
+      'Seven documented test cases passed; 12 defects found across modules, 10 fixed at time of submission.',
+    ],
+    technologies: [
+      'React 18',
+      'Vite',
+      'Node.js',
+      'Express',
+      'Python',
+      'FastAPI',
+      'MySQL',
+      'Prisma',
+      'Qdrant',
+      'InsightFace',
+      'Gemma 4',
+      'Ollama',
+      'Docker',
+      'GitHub OAuth',
+      'Discord API',
+    ],
+    features: [
+      'Facial-recognition attendance with vector-based matching',
+      'Workspace-scoped multi-tenancy with admin and employee roles',
+      'Kanban board driven by GitHub commits and Discord commands',
+      'RAG productivity scoring with confidence-rated snapshots',
+      'Automated performance appraisals, daily through monthly',
+      'Employee requests, team goals, and notifications',
+      'Light and dark themes across both dashboards',
+    ],
+    challenges: [
+      'Isolating workspace data across a relational and a vector store',
+      'Keeping LLM-generated appraisals grounded in real records',
+      'Verifying multi-tenant webhooks from two external providers',
+      'Making monitoring useful without making it invasive',
+    ],
+    media: [
+      {
+        type: 'image',
+        src: '/projects/neuroforce/01-landing.webp',
+        title: 'Landing and sign-in',
+        description: 'GitHub OAuth or email, with the workspace pitch alongside.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/02-admin-overview.webp',
+        title: 'Admin overview',
+        description:
+          'Workspace-wide attendance, face-registration coverage, and seven-day trend.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/03-attendance.webp',
+        title: 'Attendance record',
+        description: 'Check-in rate, session length, and daily check-in history.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/04-kanban.webp',
+        title: 'Kanban board',
+        description:
+          'To Do, In Progress, After Hours, and Completed — updated by commits as well as by hand.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/05-integrations.webp',
+        title: 'Integrations',
+        description: 'GitHub connected over OAuth; Discord linked with a /link code.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/06-productivity.webp',
+        title: 'Productivity snapshots',
+        description:
+          'Generated score history over a date range, each snapshot carrying a confidence figure.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/07-performance.webp',
+        title: 'Performance reports',
+        description:
+          'Attendance against productivity, tasks and hours logged, and an overall score.',
+      },
+      {
+        type: 'image',
+        src: '/projects/neuroforce/08-architecture.webp',
+        title: 'Deployment architecture',
+        description:
+          'Client edge, Vercel-hosted dashboard, Node backend, containerised Python AI service, and the split MySQL / Qdrant storage layer.',
+      },
+    ],
+    liveUrl: 'https://neuroforc.me',
+    icon: Network,
+  },
   {
     id: 'trainr',
     title: 'Trainr',

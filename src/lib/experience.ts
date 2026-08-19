@@ -1,9 +1,9 @@
 /**
- * Work history and education.
+ * Work history, education, and certifications.
  *
- * Only add entries that can be verified — a recruiter will check. Sections
- * render nothing when their array is empty, so it is safe to leave gaps
- * until the details are confirmed.
+ * Keep this in step with the résumé in public/ — a recruiter reads both, and
+ * a mismatch between them is worse than either one alone. Sections render
+ * nothing when their array is empty.
  */
 
 export interface Engagement {
@@ -27,26 +27,55 @@ export interface Education {
   detail?: string
 }
 
+export interface Certification {
+  name: string
+  issuer: string
+  date: string
+}
+
 export const engagements: Engagement[] = [
   {
-    organisation: 'Private client',
-    role: 'Full-stack developer',
-    period: '2024 — 2025',
+    organisation: 'Freelance',
+    role: 'Software engineer',
+    period: '2025 — 2026',
     location: 'Remote',
-    type: 'Contract',
+    type: 'Freelance',
     summary:
-      'Took over a partially built learning platform, fixed its authentication and backend problems, and delivered the remaining product work to sign-off.',
+      'End-to-end web work for clients, owning the full lifecycle from scoping through deployment.',
     highlights: [
-      'Rebuilt instructor and student authentication as two scoped roles on Supabase',
-      'Resolved backend defects surfacing during normal use',
-      'Shipped course, module, and lesson management with draft and published states',
-      'Added auto-generated public instructor pages with shareable community links',
-      'Redesigned the instructor dashboard around repeated tasks',
+      'Architected and delivered complete web solutions, managing each project from requirements to production',
+      'Integrated LLM APIs into client applications to add AI-backed product features',
+      'Rebuilt a learning platform’s authentication and backend, then delivered the remaining product work to sign-off',
     ],
     relatedProject: 'trainr',
   },
-  // TODO: add employment, internships, and other client work here.
+  {
+    organisation: 'Southville Solutions',
+    role: 'Backend development intern',
+    period: 'Nov 2024 — Jan 2025',
+    location: 'Lahore, Pakistan',
+    type: 'Internship',
+    summary:
+      'Built and maintained backend services supporting core features of a production application.',
+    highlights: [
+      'Built and maintained RESTful APIs in Node.js and FastAPI for production application features',
+      'Designed and optimised MySQL schemas through ORM frameworks, improving data retrieval efficiency',
+    ],
+  },
 ]
 
-// TODO: add degree, institution, and dates.
-export const education: Education[] = []
+export const education: Education[] = [
+  {
+    institution: 'University of Central Punjab',
+    qualification: 'BS Computer Science',
+    period: '2022 — 2026',
+    location: 'Lahore, Pakistan',
+    detail:
+      'Faculty of Information Technology & Computer Science. Final year project: NeuroForce, an AI workforce analytics platform.',
+  },
+]
+
+export const certifications: Certification[] = [
+  { name: 'AI Fluency: Framework & Foundations', issuer: 'Anthropic', date: 'Jun 2026' },
+  { name: 'Claude 101', issuer: 'Anthropic', date: 'Jun 2026' },
+]

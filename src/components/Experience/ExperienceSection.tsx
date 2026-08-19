@@ -5,12 +5,13 @@ import { ArrowUpRight, Download } from 'lucide-react'
 import SectionHeader from '@/components/Layout/SectionHeader'
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal'
 import MagneticLink from '@/components/motion/MagneticLink'
-import { education, engagements } from '@/lib/experience'
+import { certifications, education, engagements } from '@/lib/experience'
 import { site } from '@/lib/site'
 
 export default function ExperienceSection() {
   // Nothing verified yet means nothing to show — better than an empty shell.
-  if (engagements.length === 0 && education.length === 0) return null
+  if (engagements.length === 0 && education.length === 0 && certifications.length === 0)
+    return null
 
   return (
     <section id="experience" className="scroll-mt-24 border-t border-line py-section">
@@ -96,6 +97,30 @@ export default function ExperienceSection() {
                     {item.detail && (
                       <span className="mt-1 block text-sm text-fg-subtle">{item.detail}</span>
                     )}
+                  </span>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        )}
+
+        {certifications.length > 0 && (
+          <div className="mt-16">
+            <Reveal>
+              <h3 className="label border-b border-line pb-3">Certifications</h3>
+            </Reveal>
+            <RevealGroup interval={0.07} as="ul">
+              {certifications.map((item) => (
+                <RevealItem
+                  as="li"
+                  key={item.name}
+                  className="grid grid-cols-1 gap-2 border-b border-line py-5
+                             md:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] md:gap-12"
+                >
+                  <span className="font-mono text-2xs text-fg-subtle">{item.date}</span>
+                  <span>
+                    <span className="block text-base text-fg">{item.name}</span>
+                    <span className="mt-1 block text-sm text-fg-muted">{item.issuer}</span>
                   </span>
                 </RevealItem>
               ))}

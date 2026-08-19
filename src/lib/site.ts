@@ -12,11 +12,8 @@ export const site = {
   email: 'ammarkhancloud@icloud.com',
   github: 'https://github.com/ammarhere02',
   linkedin: 'https://www.linkedin.com/in/ammar-khan-7b656822a',
-  /**
-   * Set to '/ammar-khan-resume.pdf' once the file is dropped into public/.
-   * Left null so the site never renders a link to a missing document.
-   */
-  resumeUrl: null as string | null,
+  /** Null hides the download button; set a path to show it. */
+  resumeUrl: '/ammar-khan-resume.pdf' as string | null,
 } as const
 
 export const personJsonLd = {
