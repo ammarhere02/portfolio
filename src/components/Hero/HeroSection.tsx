@@ -1,100 +1,132 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowDown, Code, Database, Server, Shield } from 'lucide-react'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import TypewriterEffect from './TypewriterEffect'
 import InteractiveTerminal from './InteractiveTerminal'
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal'
+import MagneticLink from '@/components/motion/MagneticLink'
+import { duration, ease, fadeUp, wipeX } from '@/lib/motion'
+import { site } from '@/lib/site'
+
+const specialties = [
+  'building scalable APIs',
+  'designing auth systems',
+  'optimising databases',
+  'integrating LLMs',
+]
+
+const focus = ['Node.js', 'TypeScript', 'PostgreSQL', 'Docker', 'AWS', 'LLM Integration']
 
 export default function HeroSection() {
-  const specialties = [
-    'Full Stack Developer',
-    'Software Architect',
-    'AI Integration Specialist',
-    'API Architect',
-    'Database Designer',
-    'DevOps Enthusiast'
-  ]
+  const ref = useRef<HTMLElement>(null)
+  const reduced = useReducedMotion()
 
-  const techStack = [
-    { name: 'Node.js', icon: Server },
-    { name: 'API Design', icon: Code },
-    { name: 'Databases', icon: Database },
-    { name: 'Security', icon: Shield },
-  ]
+  // Content drifts up and dims slightly as the next section takes over.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  })
+  const y = useTransform(scrollYProgress, [0, 1], [0, -60])
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0])
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 via-transparent to-blue-50/20 dark:from-primary-900/5 dark:via-transparent dark:to-blue-900/5"></div>
-      <div className="max-w-6xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 relative z-10">
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight text-secondary-900 dark:text-secondary-100">
-                Hi, I'm{' '}
-                <span className="text-gradient">Ammar Khan</span>
-              </h1>
-
-              <div className="text-xl md:text-2xl text-secondary-600 dark:text-secondary-400 terminal-font">
-                <span className="text-primary-600 dark:text-primary-400">$</span>{' '}
-                <TypewriterEffect
-                  texts={specialties}
-                  className="text-secondary-800 dark:text-secondary-200"
-                />
-              </div>
-            </div>
-
-            <p className="text-lg md:text-xl text-secondary-600 dark:text-secondary-300 max-w-xl leading-relaxed">
-              Specialized in building scalable backend systems, secure APIs, and integrating AI solutions.
-              Based in <span className="font-semibold text-secondary-800 dark:text-secondary-100">Lahore, Pakistan</span>.
+    <section id="home" ref={ref} className="relative pb-section pt-32 md:pt-40">
+      <motion.div className="shell" style={reduced ? undefined : { y, opacity }}>
+        <RevealGroup interval={0.09}>
+          <RevealItem className="flex items-center gap-2.5">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-accent-pulse rounded-full bg-signal" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
+            </span>
+            <p className="label">
+              Available for work · {site.locality}, {site.country}
             </p>
+          </RevealItem>
 
-            <div className="flex flex-wrap gap-3 pt-2">
-              {techStack.map((tech) => {
-                const Icon = tech.icon
-                return (
-                  <div
-                    key={tech.name}
-                    className="flex items-center space-x-2 px-4 py-2 bg-secondary-100 dark:bg-secondary-800 rounded-lg hover:bg-secondary-200 dark:hover:bg-secondary-700 transition-colors"
-                  >
-                    <Icon className="w-4 h-4 text-primary-600 dark:text-primary-400" />
-                    <span className="text-secondary-700 dark:text-secondary-300 font-medium text-sm">{tech.name}</span>
-                  </div>
-                )
-              })}
-            </div>
+          <RevealItem>
+            <h1 className="display mt-6 text-6xl">
+              {site.name}
+            </h1>
+          </RevealItem>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <a
+          <RevealItem>
+            <p className="mt-4 font-mono text-xl text-fg-muted">
+              <span className="text-accent" aria-hidden="true">
+                ${' '}
+              </span>
+              <TypewriterEffect texts={specialties} className="text-fg" />
+            </p>
+          </RevealItem>
+        </RevealGroup>
+
+        <Reveal variants={wipeX} delay={0.3} className="rule my-12" />
+
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
+          <RevealGroup interval={0.08} delay={0.15} className="flex flex-col">
+            <RevealItem>
+              <p className="max-w-prose text-lg text-fg-muted">
+                I&rsquo;m a backend engineer who cares about the parts users never
+                see &mdash; the query that stays fast at a million rows, the token
+                refresh that never leaks, the API a teammate can read without asking.
+              </p>
+            </RevealItem>
+
+            <RevealItem className="mt-8 flex flex-wrap gap-2">
+              {focus.map((item) => (
+                <span key={item} className="tag">
+                  {item}
+                </span>
+              ))}
+            </RevealItem>
+
+            <RevealItem className="mt-10 flex flex-wrap items-center gap-3">
+              <MagneticLink
                 href="#projects"
-                className="btn-primary hover:shadow-lg transition-shadow"
+                className="btn-primary"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document
+                    .querySelector('#projects')
+                    ?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+                }}
               >
-                View My Work
-              </a>
-              <a
-                href="#contact"
-                className="btn-secondary hover:shadow-md transition-shadow"
+                View selected work
+                <ArrowDown className="h-4 w-4" />
+              </MagneticLink>
+              <MagneticLink
+                href={`mailto:${site.email}?subject=${encodeURIComponent('Opportunity for Ammar Khan')}`}
+                className="btn-secondary"
               >
-                Get In Touch
-              </a>
-            </div>
-          </div>
+                Get in touch
+                <ArrowUpRight className="h-4 w-4" />
+              </MagneticLink>
+            </RevealItem>
+          </RevealGroup>
 
-          <div className="relative z-10">
-            <div className="card p-0 overflow-hidden">
-              <InteractiveTerminal />
-            </div>
-          </div>
+          <Reveal delay={0.35} variants={fadeUp}>
+            <InteractiveTerminal />
+          </Reveal>
         </div>
+      </motion.div>
 
-        <div className="text-center mt-20">
-          <div className="inline-flex items-center justify-center w-8 h-8 text-secondary-400 dark:text-secondary-600">
-            <ArrowDown className="w-6 h-6" />
-          </div>
-          <p className="text-sm text-secondary-500 dark:text-secondary-500 mt-2">
-            Scroll to explore my work
-          </p>
-        </div>
-      </div>
+      <motion.div
+        aria-hidden="true"
+        className="shell mt-20 flex items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: duration.slow, ease: ease.out }}
+      >
+        <motion.span
+          animate={reduced ? undefined : { y: [0, 5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: ease.inOut }}
+          className="text-fg-subtle"
+        >
+          <ArrowDown className="h-4 w-4" />
+        </motion.span>
+        <span className="label">Scroll</span>
+      </motion.div>
     </section>
   )
 }

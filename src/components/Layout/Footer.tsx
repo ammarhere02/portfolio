@@ -1,85 +1,80 @@
 'use client'
 
-import { Github, Linkedin, Mail, MapPin } from 'lucide-react'
+import { ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react'
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal'
+import MagneticLink from '@/components/motion/MagneticLink'
+import { wipeX } from '@/lib/motion'
+import { site } from '@/lib/site'
+
+const socials = [
+  { name: 'GitHub', href: site.github, icon: Github },
+  { name: 'LinkedIn', href: site.linkedin, icon: Linkedin },
+  { name: 'Email', href: `mailto:${site.email}`, icon: Mail },
+]
 
 export default function Footer() {
-  const socialLinks = [
-    {
-      name: 'GitHub',
-      href: 'https://github.com/ammarhere02',
-      icon: Github,
-    },
-    {
-      name: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/ammar-khan-7b656822a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-      icon: Linkedin,
-    },
-    {
-      name: 'Email',
-      href: 'mailto:ammarkhancloud@icloud.com',
-      icon: Mail,
-    },
-  ]
+  const mailto = `mailto:${site.email}?subject=${encodeURIComponent('Opportunity for Ammar Khan')}`
 
   return (
-    <footer id="contact" className="bg-secondary-50 dark:bg-secondary-900 border-t border-secondary-200 dark:border-secondary-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold text-gradient mb-4">Ammar Khan</h3>
-            <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-              Backend developer and AI integration specialist creating scalable systems and intelligent applications.
-            </p>
-            <div className="flex items-center text-secondary-600 dark:text-secondary-400">
-              <MapPin className="w-4 h-4 mr-2" />
-              <span>Lahore, Punjab, Pakistan</span>
-            </div>
-          </div>
+    <footer id="contact" className="scroll-mt-24 border-t border-line py-section">
+      <div className="shell">
+        <Reveal className="flex items-baseline gap-4">
+          <span className="font-mono text-2xs text-accent">04</span>
+          <span className="label">Contact</span>
+        </Reveal>
 
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {['Home', 'About', 'Projects', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <Reveal variants={wipeX} delay={0.1} className="rule mt-4" />
 
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Let's Work Together</h4>
-            <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-4">
-              Available for consultation and freelance projects
-            </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((link) => {
-                const Icon = link.icon
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-secondary-200 dark:bg-secondary-800 hover:bg-secondary-300 dark:hover:bg-secondary-700 transition-colors"
-                    aria-label={link.name}
-                  >
-                    <Icon className="w-5 h-5 text-secondary-600 dark:text-secondary-300" />
-                  </a>
-                )
-              })}
-            </div>
-          </div>
+        <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-20">
+          <RevealGroup interval={0.08}>
+            <RevealItem>
+              <h2 className="display max-w-2xl text-4xl">
+                Hiring, or have a system that needs building?
+              </h2>
+            </RevealItem>
+            <RevealItem>
+              <p className="mt-6 max-w-prose text-lg text-fg-muted">
+                I&rsquo;m open to backend and full-stack roles, and to focused
+                contract work. Tell me what you&rsquo;re building &mdash; I read
+                every message.
+              </p>
+            </RevealItem>
+            <RevealItem className="mt-8">
+              <MagneticLink href={mailto} className="btn-primary">
+                {site.email}
+                <ArrowUpRight className="h-4 w-4" />
+              </MagneticLink>
+            </RevealItem>
+          </RevealGroup>
+
+          <RevealGroup interval={0.07} delay={0.15} className="flex flex-col gap-3">
+            {socials.map(({ name, href, icon: Icon }) => (
+              <RevealItem key={name}>
+                <a
+                  href={href}
+                  target={href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                  className="group flex items-center gap-3 border-b border-line py-2.5
+                             text-sm text-fg-muted transition-colors hover:text-accent lg:min-w-[13rem]"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{name}</span>
+                  <ArrowUpRight
+                    className="ml-auto h-3.5 w-3.5 transition-transform duration-200
+                               group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </a>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </div>
 
-        <div className="border-t border-secondary-200 dark:border-secondary-800 mt-8 pt-8 text-center">
-          <p className="text-secondary-600 dark:text-secondary-400">
-            © {new Date().getFullYear()} Ammar Khan. Built with Next.js, React, and Tailwind CSS.
+        <div className="mt-20 flex flex-col gap-3 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono text-2xs text-fg-subtle">
+            © {new Date().getFullYear()} {site.name} · {site.locality}, {site.country}
+          </p>
+          <p className="font-mono text-2xs text-fg-subtle">
+            Next.js · TypeScript · Tailwind · Framer Motion
           </p>
         </div>
       </div>

@@ -1,332 +1,249 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Terminal, Circle } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { site } from '@/lib/site'
 
 interface TerminalLine {
-  command?: string
-  output?: string[]
-  delay?: number
+  command: string
+  output: string[]
+  /** Pause after the output lands, before the next command types. */
+  delay: number
 }
 
+const bootSequence: TerminalLine[] = [
+  {
+    command: 'whoami',
+    output: ['ammar-khan — backend engineer, Lahore PK'],
+    delay: 900,
+  },
+  {
+    command: 'cat stack.json',
+    output: [
+      '{',
+      '  "runtime":  ["Node.js", "Express", "NestJS"],',
+      '  "data":     ["PostgreSQL", "MongoDB", "Prisma", "Redis"],',
+      '  "auth":     ["JWT", "OAuth 2.0", "RBAC"],',
+      '  "infra":    ["Docker", "AWS", "nginx", "CI/CD"],',
+      '  "ai":       ["LLM integration", "prompt engineering", "RAG"]',
+      '}',
+    ],
+    delay: 2200,
+  },
+  {
+    command: 'git log --oneline -3',
+    output: [
+      'a3b2c1d  feat: JWT refresh token rotation',
+      '9f8e7d6  fix: connection pool exhaustion under load',
+      '5c4b3a2  add: per-route API rate limiting',
+    ],
+    delay: 1800,
+  },
+]
+
+const HELP_TEXT = [
+  'about      — who I am and how I got here',
+  'projects   — what I have shipped',
+  'contact    — how to reach me',
+  'skills     — the stack I work in',
+  'social     — github and linkedin',
+  'clear      — reset this terminal',
+]
+
 export default function InteractiveTerminal() {
-  const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [currentCommandText, setCurrentCommandText] = useState('')
+  const reduced = useReducedMotion()
+  const [lineIndex, setLineIndex] = useState(0)
+  const [typed, setTyped] = useState('')
   const [showOutput, setShowOutput] = useState(false)
-  const [isTyping, setIsTyping] = useState(false)
-  const [userInput, setUserInput] = useState('')
-  const [userCommands, setUserCommands] = useState<{command: string, output: string}[]>([])
-  const [showUserPrompt, setShowUserPrompt] = useState(false)
-  const terminalRef = useRef<HTMLDivElement>(null)
+  const [input, setInput] = useState('')
+  const [history, setHistory] = useState<{ command: string; output: string[] }[]>([])
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.querySelector(sectionId) as HTMLElement
-    if (element) {
-      const offsetTop = element.offsetTop - 80
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
-      })
-    }
-  }
+  const bootDone = lineIndex >= bootSequence.length
 
-  const handleUserCommand = (command: string) => {
-    const cmd = command.trim().toLowerCase()
-    let output = ''
+  const scrollTo = useCallback(
+    (selector: string) =>
+      document
+        .querySelector(selector)
+        ?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }),
+    [reduced],
+  )
 
-    if (cmd === 'projects') {
-      output = 'Navigating to projects section...'
-      setTimeout(() => scrollToSection('#projects'), 1000)
-    } else if (cmd === 'contact') {
-      output = 'Navigating to contact section...'
-      setTimeout(() => scrollToSection('#contact'), 1000)
-    } else if (cmd === 'ls') {
-      output = 'projects/  about/  contact/  skills.json  README.md'
-    } else if (cmd.startsWith('cd ')) {
-      const dir = cmd.split(' ')[1]
-      if (dir === 'projects') {
-        output = 'Navigating to projects section...'
-        setTimeout(() => scrollToSection('#projects'), 1000)
-      } else if (dir === 'contact') {
-        output = 'Navigating to contact section...'
-        setTimeout(() => scrollToSection('#contact'), 1000)
-      } else if (dir === 'about') {
-        output = 'Navigating to about section...'
-        setTimeout(() => scrollToSection('#about'), 1000)
-      } else {
-        output = `cd: ${dir}: No such file or directory`
-      }
-    } else if (cmd === 'cd') {
-      output = 'Usage: cd <directory> (try: projects, contact, about)'
-    } else if (cmd === 'clear') {
-      setUserCommands([])
-      return
-    } else {
-      output = 'psych! no command found'
-    }
-
-    setUserCommands(prev => [...prev, { command, output }])
-  }
-
-  const terminalSequence: TerminalLine[] = [
-    {
-      command: 'whoami',
-      output: ['ammar-khan'],
-      delay: 1000
-    },
-    {
-      command: 'ls -la ~/projects',
-      output: [
-        'drwxr-xr-x  8 ammar  staff   256 Sep  6 2024 movie-booking-app',
-        'drwxr-xr-x  6 ammar  staff   192 Aug 15 2024 auth-service-api',
-        'drwxr-xr-x  4 ammar  staff   128 Jul 20 2024 inventory-system',
-        'drwxr-xr-x  5 ammar  staff   160 Jun 10 2024 docker-microservices'
-      ],
-      delay: 2000
-    },
-    {
-      command: 'cat skills.json',
-      output: [
-        '{',
-        '  "backend": ["Node.js", "Express", "NestJS"],',
-        '  "database": ["PostgreSQL", "MongoDB", "Prisma"],',
-        '  "auth": ["JWT", "OAuth", "RBAC"],',
-        '  "devops": ["Docker", "AWS", "CI/CD"],',
-        '  "tools": ["Git", "Postman", "VS Code"]',
-        '}'
-      ],
-      delay: 2500
-    },
-    {
-      command: 'git log --oneline -3',
-      output: [
-        'a3b2c1d feat: implement JWT refresh token rotation',
-        '9f8e7d6 fix: resolve database connection pooling issue',
-        '5c4b3a2 add: comprehensive API rate limiting'
-      ],
-      delay: 2000
-    }
-  ]
+  // Reduced motion: skip the typing animation, show the finished transcript.
+  useEffect(() => {
+    if (reduced) setLineIndex(bootSequence.length)
+  }, [reduced])
 
   useEffect(() => {
-    if (currentLineIndex >= terminalSequence.length) return
+    if (reduced || bootDone) return
 
-    const currentLine = terminalSequence[currentLineIndex]
-    const command = currentLine.command || ''
-    
-    if (!isTyping) {
-      setIsTyping(true)
-      setCurrentCommandText('')
-      setShowOutput(false)
-    }
+    const { command, delay } = bootSequence[lineIndex]
 
-    let charIndex = currentCommandText.length
-    
-    if (charIndex < command.length) {
-      const timer = setTimeout(() => {
-        setCurrentCommandText(command.substring(0, charIndex + 1))
-      }, 100)
+    if (typed.length < command.length) {
+      const timer = setTimeout(() => setTyped(command.slice(0, typed.length + 1)), 55)
       return () => clearTimeout(timer)
-    } else {
-      if (!showOutput) {
-        const timer = setTimeout(() => {
-          setShowOutput(true)
-          setIsTyping(false)
-        }, 500)
-        return () => clearTimeout(timer)
-      } else {
-        const timer = setTimeout(() => {
-          setCurrentLineIndex(prev => prev + 1)
-        }, currentLine.delay)
-        return () => clearTimeout(timer)
-      }
     }
-  }, [currentLineIndex, currentCommandText, showOutput, isTyping])
+
+    if (!showOutput) {
+      const timer = setTimeout(() => setShowOutput(true), 320)
+      return () => clearTimeout(timer)
+    }
+
+    const timer = setTimeout(() => {
+      setLineIndex((prev) => prev + 1)
+      setTyped('')
+      setShowOutput(false)
+    }, delay)
+    return () => clearTimeout(timer)
+  }, [lineIndex, typed, showOutput, bootDone, reduced])
 
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-    }
-  }, [currentLineIndex, showOutput, userCommands, showUserPrompt])
+    const node = scrollRef.current
+    if (node) node.scrollTop = node.scrollHeight
+  }, [lineIndex, showOutput, history])
 
-  const resetAnimation = () => {
-    setCurrentLineIndex(0)
-    setCurrentCommandText('')
-    setShowOutput(false)
-    setIsTyping(false)
-    setShowUserPrompt(false)
-    setUserCommands([])
-    setUserInput('')
-  }
+  const runCommand = useCallback((raw: string) => {
+    const cmd = raw.trim().toLowerCase()
+    let output: string[]
 
-  useEffect(() => {
-    if (currentLineIndex >= terminalSequence.length) {
-      setShowUserPrompt(true)
-      const resetTimer = setTimeout(resetAnimation, 15000) // Longer delay to allow interaction
-      return () => clearTimeout(resetTimer)
+    switch (cmd) {
+      case 'help':
+        output = HELP_TEXT
+        break
+      case 'about':
+        output = ['Opening about…']
+        setTimeout(() => scrollTo('#about'), 400)
+        break
+      case 'projects':
+      case 'work':
+        output = ['Opening work…']
+        setTimeout(() => scrollTo('#projects'), 400)
+        break
+      case 'contact':
+        output = [`Reach me at ${site.email}`]
+        setTimeout(() => scrollTo('#contact'), 400)
+        break
+      case 'skills':
+        output = ['Run `cat stack.json` above, or scroll to the About section.']
+        break
+      case 'social':
+        output = [site.github, site.linkedin]
+        break
+      case 'ls':
+        output = ['about/  projects/  contact/  stack.json  README.md']
+        break
+      case 'clear':
+        setHistory([])
+        return
+      case '':
+        return
+      default:
+        output = [`zsh: command not found: ${raw.trim()} — try \`help\``]
     }
-  }, [currentLineIndex])
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const command = userInput.trim()
-      if (command) {
-        handleUserCommand(command)
-        setUserInput('')
-      }
-    }
-  }
+    setHistory((prev) => [...prev, { command: raw.trim(), output }])
+  }, [scrollTo])
+
+  const Prompt = () => (
+    <span className="shrink-0 select-none">
+      <span className="text-accent-300">ammar</span>
+      <span className="text-ink-500">@</span>
+      <span className="text-ink-300">portfolio</span>
+      <span className="text-ink-500"> ~ $ </span>
+    </span>
+  )
+
+  const renderOutput = (lines: string[], key: string) =>
+    lines.map((line, i) => (
+      <motion.div
+        key={`${key}-${i}`}
+        initial={reduced ? false : { opacity: 0, x: -6 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: reduced ? 0 : i * 0.045, duration: 0.28 }}
+        className="whitespace-pre-wrap break-words text-ink-300"
+      >
+        {line}
+      </motion.div>
+    ))
 
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden shadow-2xl">
-      <div className="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center space-x-2">
-          <Circle className="w-3 h-3 text-red-500 fill-current" />
-          <Circle className="w-3 h-3 text-yellow-500 fill-current" />
-          <Circle className="w-3 h-3 text-green-500 fill-current" />
+    <div className="overflow-hidden rounded-card border border-line bg-ink-950 shadow-xl shadow-black/5 dark:shadow-black/40">
+      <div className="flex items-center justify-between border-b border-white/[0.07] px-4 py-3">
+        <div className="flex items-center gap-1.5" aria-hidden="true">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <div className="flex items-center space-x-2 text-gray-400 text-sm">
-          <Terminal className="w-4 h-4" />
-          <span>zsh</span>
-        </div>
+        <span className="font-mono text-2xs uppercase tracking-label text-ink-500">
+          ammar@portfolio — zsh
+        </span>
+        <span className="w-12" aria-hidden="true" />
       </div>
-      
-      <div 
-        ref={terminalRef}
-        className="h-80 p-4 overflow-y-auto text-sm terminal-font bg-gray-900 text-green-400"
+
+      <div
+        ref={scrollRef}
+        onClick={() => inputRef.current?.focus()}
+        className="h-[22rem] space-y-2 overflow-y-auto p-4 font-mono text-[13px] leading-relaxed"
       >
-        <div className="space-y-2">
-          {terminalSequence.slice(0, currentLineIndex).map((line, index) => (
-            <div key={index} className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="text-blue-400">ammar@macbook</span>
-                <span className="text-gray-500">:</span>
-                <span className="text-purple-400">~</span>
-                <span className="text-gray-500">$</span>
-                <span className="text-white">{line.command}</span>
-              </div>
-              <AnimatePresence>
-                {line.output && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-1 pl-4"
-                  >
-                    {line.output.map((outputLine, outputIndex) => (
-                      <motion.div
-                        key={outputIndex}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: outputIndex * 0.1 }}
-                        className="text-gray-300"
-                      >
-                        {outputLine}
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+        {bootSequence.slice(0, lineIndex).map((line, i) => (
+          <div key={`done-${i}`} className="space-y-1">
+            <div className="flex flex-wrap">
+              <Prompt />
+              <span className="text-ink-50">{line.command}</span>
             </div>
-          ))}
-          
-          {currentLineIndex < terminalSequence.length && (
-            <div className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="text-blue-400">ammar@macbook</span>
-                <span className="text-gray-500">:</span>
-                <span className="text-purple-400">~</span>
-                <span className="text-gray-500">$</span>
-                <span className="text-white">
-                  {currentCommandText}
-                  {isTyping && (
-                    <motion.span
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                      className="text-green-400"
-                    >
-                      _
-                    </motion.span>
-                  )}
-                </span>
-              </div>
-              
-              <AnimatePresence>
-                {showOutput && terminalSequence[currentLineIndex].output && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-1 pl-4"
-                  >
-                    {terminalSequence[currentLineIndex].output!.map((outputLine, outputIndex) => (
-                      <motion.div
-                        key={outputIndex}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: outputIndex * 0.1 }}
-                        className="text-gray-300"
-                      >
-                        {outputLine}
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
+            {renderOutput(line.output, `done-${i}`)}
+          </div>
+        ))}
 
-          {/* User Commands History */}
-          {userCommands.map((userCmd, index) => (
-            <div key={`user-${index}`} className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="text-blue-400">ammar@macbook</span>
-                <span className="text-gray-500">:</span>
-                <span className="text-purple-400">~</span>
-                <span className="text-gray-500">$</span>
-                <span className="text-white">{userCmd.command}</span>
-              </div>
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-green-400 pl-4"
-              >
-                {userCmd.output}
-              </motion.div>
+        {!bootDone && (
+          <div className="space-y-1">
+            <div className="flex flex-wrap">
+              <Prompt />
+              <span className="text-ink-50">{typed}</span>
+              {!showOutput && <span className="ml-0.5 animate-blink text-accent-400">▌</span>}
             </div>
-          ))}
+            {showOutput && renderOutput(bootSequence[lineIndex].output, `active-${lineIndex}`)}
+          </div>
+        )}
 
-          {/* Interactive User Prompt */}
-          {showUserPrompt && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center space-x-2"
-            >
-              <span className="text-blue-400">ammar@macbook</span>
-              <span className="text-gray-500">:</span>
-              <span className="text-purple-400">~</span>
-              <span className="text-gray-500">$</span>
-              <input
-                type="text"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="bg-transparent text-white outline-none flex-1 caret-green-400"
-                placeholder="Try: projects, contact, ls, cd projects"
-                autoFocus
-              />
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.5, repeat: Infinity }}
-                className="text-green-400"
-              >
-                _
-              </motion.span>
-            </motion.div>
-          )}
-        </div>
+        {history.map((entry, i) => (
+          <div key={`hist-${i}`} className="space-y-1">
+            <div className="flex flex-wrap">
+              <Prompt />
+              <span className="text-ink-50">{entry.command}</span>
+            </div>
+            {renderOutput(entry.output, `hist-${i}`)}
+          </div>
+        ))}
+
+        {bootDone && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              runCommand(input)
+              setInput('')
+            }}
+            className="flex flex-wrap items-center"
+          >
+            <label htmlFor="terminal-input" className="sr-only">
+              Terminal command — type help to see options
+            </label>
+            <Prompt />
+            <input
+              id="terminal-input"
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="type `help`"
+              className="min-w-0 flex-1 bg-transparent text-ink-50 caret-accent-400
+                         outline-none placeholder:text-ink-600"
+            />
+          </form>
+        )}
       </div>
     </div>
   )

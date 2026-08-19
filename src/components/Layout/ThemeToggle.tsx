@@ -1,22 +1,34 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/hooks/useTheme'
+import { duration, ease } from '@/lib/motion'
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme()
+  const reduced = useReducedMotion()
+  const Icon = theme === 'dark' ? Sun : Moon
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-secondary-200 dark:bg-secondary-700 hover:bg-secondary-300 dark:hover:bg-secondary-600 transition-colors"
-      aria-label="Toggle theme"
+      className="relative grid h-9 w-9 place-items-center rounded-card text-fg-muted
+                 transition-colors hover:bg-surface-2 hover:text-fg"
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
     >
-      {theme === 'light' ? (
-        <Moon className="w-5 h-5 text-secondary-600 dark:text-secondary-300" />
-      ) : (
-        <Sun className="w-5 h-5 text-secondary-600 dark:text-secondary-300" />
-      )}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={reduced ? false : { rotate: -60, opacity: 0, scale: 0.7 }}
+          animate={{ rotate: 0, opacity: 1, scale: 1 }}
+          exit={reduced ? undefined : { rotate: 60, opacity: 0, scale: 0.7 }}
+          transition={{ duration: duration.fast, ease: ease.out }}
+          className="absolute grid place-items-center"
+        >
+          <Icon className="h-[18px] w-[18px]" />
+        </motion.span>
+      </AnimatePresence>
     </button>
   )
 }

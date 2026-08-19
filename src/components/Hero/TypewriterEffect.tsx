@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 interface TypewriterEffectProps {
   texts: string[]
@@ -12,55 +13,58 @@ interface TypewriterEffectProps {
 
 export default function TypewriterEffect({
   texts,
-  typingSpeed = 100,
-  deletingSpeed = 50,
-  pauseDuration = 2000,
-  className = ''
+  typingSpeed = 65,
+  deletingSpeed = 32,
+  pauseDuration = 1800,
+  className = '',
 }: TypewriterEffectProps) {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const [currentText, setCurrentText] = useState('')
+  const reduced = useReducedMotion()
+  const [index, setIndex] = useState(0)
+  const [text, setText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const [showCursor, setShowCursor] = useState(true)
 
   useEffect(() => {
-    const currentFullText = texts[currentTextIndex]
-    
+    if (reduced) return
+
+    const full = texts[index]
+    const atEnd = text === full
+    const atStart = text === ''
+
+    // Pausing at the end of a word is its own timer, so the caret keeps
+    // blinking instead of the whole loop stalling.
+    const delay = atEnd && !isDeleting ? pauseDuration : isDeleting ? deletingSpeed : typingSpeed
+
     const timer = setTimeout(() => {
       if (!isDeleting) {
-        if (currentText.length < currentFullText.length) {
-          setCurrentText(currentFullText.substring(0, currentText.length + 1))
-        } else {
-          setTimeout(() => setIsDeleting(true), pauseDuration)
-        }
+        if (atEnd) setIsDeleting(true)
+        else setText(full.slice(0, text.length + 1))
       } else {
-        if (currentText.length > 0) {
-          setCurrentText(currentText.substring(0, currentText.length - 1))
-        } else {
+        if (atStart) {
           setIsDeleting(false)
-          setCurrentTextIndex((prevIndex) => 
-            prevIndex === texts.length - 1 ? 0 : prevIndex + 1
-          )
+          setIndex((prev) => (prev + 1) % texts.length)
+        } else {
+          setText(full.slice(0, text.length - 1))
         }
       }
-    }, isDeleting ? deletingSpeed : typingSpeed)
+    }, delay)
 
     return () => clearTimeout(timer)
-  }, [currentText, currentTextIndex, isDeleting, texts, typingSpeed, deletingSpeed, pauseDuration])
+  }, [text, index, isDeleting, texts, typingSpeed, deletingSpeed, pauseDuration, reduced])
 
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev)
-    }, 500)
-
-    return () => clearInterval(cursorTimer)
-  }, [])
+  // Screen readers get the full list once; the animation itself is decorative.
+  if (reduced) {
+    return <span className={className}>{texts[0]}</span>
+  }
 
   return (
-    <span className={className}>
-      {currentText}
-      <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-100`}>
-        |
+    <>
+      <span className={className} aria-hidden="true">
+        {text}
+        <span className="ml-0.5 inline-block w-[0.5ch] animate-blink bg-accent align-baseline text-transparent">
+          _
+        </span>
       </span>
-    </span>
+      <span className="sr-only">{texts.join(', ')}</span>
+    </>
   )
 }

@@ -1,205 +1,144 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { User, Code, Database, Shield, Server, Cloud, GitBranch } from 'lucide-react'
+import SectionHeader from '@/components/Layout/SectionHeader'
 import SkillsGrid from './SkillsGrid'
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal'
+
+const journey = [
+  {
+    year: '2022',
+    title: 'Frontend first',
+    description:
+      'React, HTML, CSS. Built responsive interfaces and learned how the browser actually renders what I wrote.',
+  },
+  {
+    year: '2023',
+    title: 'Crossing to the server',
+    description:
+      'Node.js and Express. First real APIs, first schema I regretted, first time I understood why indexes matter.',
+  },
+  {
+    year: '2024',
+    title: 'Backend by choice',
+    description:
+      'Scalable services, authentication flows, query optimisation, containers and deploys. Backend stopped being the other half and became the work.',
+  },
+  {
+    year: '2025',
+    title: 'AI integration',
+    description:
+      'LLM-backed features, prompt engineering, retrieval pipelines — and the architecture decisions that keep them affordable.',
+  },
+]
+
+const principles = [
+  {
+    title: 'Readable beats clever',
+    description:
+      'Code is read far more often than it is written. I optimise for the person debugging it at 2am.',
+  },
+  {
+    title: 'Security is structural',
+    description:
+      'Auth, validation, and least privilege belong in the design, not in a hardening pass before launch.',
+  },
+  {
+    title: 'Measure, then optimise',
+    description:
+      'I profile before I rewrite. Most performance problems are one query or one missing index.',
+  },
+]
 
 export default function AboutSection() {
-  const journey = [
-    {
-      year: '2022',
-      title: 'Frontend Focus',
-      description: 'Started with React, HTML, CSS, and JavaScript. Built responsive UIs and learned modern frontend frameworks.',
-      icon: Code,
-      color: 'from-blue-500 to-purple-500'
-    },
-    {
-      year: '2023',
-      title: 'Full-Stack Transition',
-      description: 'Dove into Node.js and Express. Built my first APIs and learned about databases, authentication, and server architecture.',
-      icon: Server,
-      color: 'from-green-500 to-teal-500'
-    },
-    {
-      year: '2024',
-      title: 'Backend Specialization',
-      description: 'Focused on scalable backend systems, microservices, security, and DevOps. Mastered advanced authentication and database optimization.',
-      icon: Database,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      year: '2025',
-      title: 'AI Integration & Systems Architecture',
-      description: 'Specializing in LLM integration, prompt engineering, and building AI-powered applications. Leading backend architecture decisions and implementing intelligent systems.',
-      icon: Cloud,
-      color: 'from-purple-500 to-pink-500'
-    }
-  ]
-
-  const values = [
-    {
-      title: 'Clean Code',
-      description: 'I believe in writing maintainable, readable code that scales with the business.',
-      icon: GitBranch
-    },
-    {
-      title: 'Security First',
-      description: 'Every system I build prioritizes security from the ground up, not as an afterthought.',
-      icon: Shield
-    },
-    {
-      title: 'Performance',
-      description: 'Optimizing for speed and efficiency while maintaining code quality and readability.',
-      icon: Server
-    }
-  ]
-
   return (
-    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">About Me</span>
-          </h2>
-          <p className="text-xl text-secondary-600 dark:text-secondary-300 max-w-3xl mx-auto leading-relaxed">
-            My journey from frontend curiosity to backend expertise, driven by a passion 
-            for building systems that solve real problems.
-          </p>
-        </motion.div>
+    <section id="about" className="scroll-mt-24 py-section">
+      <div className="shell">
+        <SectionHeader
+          index="01"
+          label="About"
+          title={
+            <>
+              I got into backend by following the{' '}
+              <em className="italic text-accent">interesting</em> problems.
+            </>
+          }
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                  <User className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                </div>
-                <h3 className="text-2xl font-semibold text-secondary-900 dark:text-secondary-100">
-                  My Story
-                </h3>
-              </div>
-              
-              <div className="space-y-6 text-secondary-600 dark:text-secondary-300 leading-relaxed">
-                <p>
-                  I started my development journey with a curiosity about how websites work, 
-                  diving into React and frontend development. But as I built more applications, 
-                  I became fascinated by what happens behind the scenes - the APIs, databases, 
-                  and systems that power user experiences.
-                </p>
-                
-                <p>
-                  That curiosity led me to backend development, where I discovered my true passion. 
-                  There's something deeply satisfying about architecting systems that handle complex 
-                  business logic, secure sensitive data, and scale to serve thousands of users.
-                </p>
-                
-                <p>
-                  Today, I specialize in building robust backend systems with Node.js, designing
-                  secure authentication flows, optimizing database performance, and creating
-                  APIs that developers love to work with. Recently, I've been diving deep into
-                  AI integration, working with LLMs and prompt engineering. I'm based in Lahore,
-                  Punjab, Pakistan and always excited about the next technical challenge.
-                </p>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-24">
+          <RevealGroup interval={0.08} className="space-y-6 text-fg-muted">
+            <RevealItem>
+              <p>
+                I started because I wanted to know how websites worked. I stayed because
+                of what sits behind them &mdash; the APIs, the schemas, the auth flows,
+                the systems that quietly decide whether a product feels fast or broken.
+              </p>
+            </RevealItem>
+            <RevealItem>
+              <p>
+                These days I build backends in Node.js and TypeScript: designing
+                REST APIs teams can actually navigate, securing them properly, and
+                keeping database queries honest as the data grows. Most recently
+                I&rsquo;ve been working on LLM-backed features and the retrieval
+                plumbing that makes them useful rather than impressive.
+              </p>
+            </RevealItem>
+            <RevealItem>
+              <p>
+                I&rsquo;m based in Lahore and I work well with distributed teams. If
+                you have a system that needs to hold up under real traffic, that&rsquo;s
+                the kind of problem I want.
+              </p>
+            </RevealItem>
+          </RevealGroup>
 
-            <div className="card">
-              <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
-                What Drives Me
-              </h3>
-              <div className="space-y-4">
-                {values.map((value, index) => {
-                  const Icon = value.icon
-                  return (
-                    <motion.div
-                      key={value.title}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex items-start space-x-3"
-                    >
-                      <div className="p-2 bg-secondary-100 dark:bg-secondary-700 rounded-lg">
-                        <Icon className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-secondary-900 dark:text-secondary-100 mb-1">
-                          {value.title}
-                        </h4>
-                        <p className="text-secondary-600 dark:text-secondary-400 text-sm">
-                          {value.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </div>
-          </motion.div>
+          <div>
+            <Reveal>
+              <h3 className="label mb-8">The path here</h3>
+            </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="card">
-              <h3 className="text-2xl font-semibold text-secondary-900 dark:text-secondary-100 mb-8">
-                My Development Journey
-              </h3>
-              
-              <div className="space-y-8">
-                {journey.map((phase, index) => {
-                  const Icon = phase.icon
-                  return (
-                    <motion.div
-                      key={phase.year}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="relative flex items-start space-x-4"
-                    >
-                      {index !== journey.length - 1 && (
-                        <div className="absolute left-6 top-12 w-0.5 h-16 bg-secondary-200 dark:bg-secondary-700"></div>
-                      )}
-                      
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${phase.color} shadow-lg flex-shrink-0`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100">
-                            {phase.title}
-                          </h4>
-                          <span className="px-2 py-1 bg-secondary-100 dark:bg-secondary-700 rounded-full text-xs font-medium text-secondary-600 dark:text-secondary-400">
-                            {phase.year}
-                          </span>
-                        </div>
-                        <p className="text-secondary-600 dark:text-secondary-400 leading-relaxed">
-                          {phase.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </div>
-          </motion.div>
+            <RevealGroup interval={0.09} as="ol" className="relative">
+              <span
+                className="absolute bottom-2 left-[3.25rem] top-2 w-px bg-line"
+                aria-hidden="true"
+              />
+              {journey.map((phase) => (
+                <RevealItem
+                  as="li"
+                  key={phase.year}
+                  className="relative grid grid-cols-[3.25rem_1fr] gap-6 pb-10 last:pb-0"
+                >
+                  <span className="pt-0.5 font-mono text-xs text-accent">{phase.year}</span>
+                  <div className="relative pl-6">
+                    <span
+                      className="absolute -left-[3px] top-2 h-1.5 w-1.5 rounded-full bg-accent
+                                 ring-4 ring-canvas"
+                      aria-hidden="true"
+                    />
+                    <h4 className="text-base font-medium text-fg">{phase.title}</h4>
+                    <p className="mt-1.5 text-sm text-fg-muted">{phase.description}</p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
         </div>
+
+        <Reveal className="rule mt-20" />
+
+        <RevealGroup
+          interval={0.08}
+          className="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8"
+        >
+          {principles.map((principle, i) => (
+            <RevealItem key={principle.title}>
+              <span className="font-mono text-2xs text-fg-subtle">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h4 className="mt-3 text-base font-medium text-fg">{principle.title}</h4>
+              <p className="mt-2 text-sm text-fg-muted">{principle.description}</p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
 
         <SkillsGrid />
       </div>

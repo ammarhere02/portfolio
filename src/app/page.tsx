@@ -1,19 +1,28 @@
-'use client'
-
 import Navigation from '@/components/Layout/Navigation'
 import HeroSection from '@/components/Hero/HeroSection'
-import ProjectsSection from '@/components/Projects/ProjectsSection'
 import AboutSection from '@/components/About/AboutSection'
+import ExperienceSection from '@/components/Experience/ExperienceSection'
+import ProjectsSection from '@/components/Projects/ProjectsSection'
 import Footer from '@/components/Layout/Footer'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200]
+                   focus:rounded-card focus:bg-fg focus:px-4 focus:py-2 focus:text-sm focus:text-canvas"
+      >
+        Skip to content
+      </a>
       <Navigation />
-      <HeroSection />
-      <AboutSection />
-      <ProjectsSection />
+      <main id="main">
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ProjectsSection />
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }

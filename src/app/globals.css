@@ -2,69 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
-
 @layer base {
+  :root {
+    --canvas: 247 248 248;
+    --surface: 255 255 255;
+    --surface-2: 240 242 244;
+    --line: 226 229 233;
+    --line-strong: 200 205 212;
+    --fg: 22 24 28;
+    --fg-muted: 74 81 91;
+    --fg-subtle: 101 109 120;
+    --accent: 51 102 242;
+    --accent-soft: 217 230 255;
+  }
+
+  .dark {
+    --canvas: 14 16 19;
+    --surface: 22 24 28;
+    --surface-2: 29 32 37;
+    --line: 40 44 51;
+    --line-strong: 58 63 72;
+    --fg: 242 244 246;
+    --fg-muted: 163 170 180;
+    --fg-subtle: 125 133 147;
+    --accent: 89 142 255;
+    --accent-soft: 28 47 110;
+  }
+
   html {
     scroll-behavior: smooth;
+    /* Keeps anchored sections clear of the fixed header */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply text-secondary-900 dark:text-secondary-100;
-    @apply bg-white dark:bg-secondary-900;
-    font-family: 'Inter', system-ui, sans-serif;
-    line-height: 1.7;
+    font-family: theme('fontFamily.sans');
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
   }
 
-  h1 {
-    @apply font-bold tracking-tight text-5xl md:text-6xl leading-tight;
-    font-weight: 800;
+  ::selection {
+    background-color: rgb(var(--accent) / 0.22);
   }
 
-  h2 {
-    @apply font-bold tracking-tight text-3xl md:text-4xl leading-tight;
-    font-weight: 700;
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
-  h3 {
-    @apply font-semibold tracking-tight text-xl md:text-2xl leading-tight;
-    font-weight: 600;
-  }
+  /* Honour the OS setting: collapse every transition and animation to
+     a near-instant state change rather than removing the end state. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
 
-  h4, h5, h6 {
-    @apply font-medium tracking-tight;
-    font-weight: 500;
-  }
-
-  p {
-    @apply leading-relaxed;
-    font-weight: 400;
-  }
-
-  .terminal-font {
-    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
-    font-weight: 400;
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 @layer components {
+  .shell {
+    @apply mx-auto w-full max-w-content px-gutter;
+  }
+
+  /* Display type: Instrument Serif only ships a 400 weight — it carries
+     presence through size and tight tracking, not boldness. */
+  .display {
+    @apply font-display font-normal tracking-tighter text-fg;
+  }
+
+  .label {
+    @apply font-mono text-2xs uppercase tracking-label text-fg-subtle;
+  }
+
+  .panel {
+    @apply rounded-card border border-line bg-surface;
+  }
+
+  .rule {
+    @apply h-px w-full bg-line;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-card px-5 py-3
+           text-sm font-medium transition-colors duration-200 ease-out;
+  }
+
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
-    font-size: 1rem;
-    font-weight: 600;
+    @apply btn bg-fg text-canvas hover:bg-accent;
   }
 
   .btn-secondary {
-    @apply bg-secondary-200 hover:bg-secondary-300 dark:bg-secondary-700 dark:hover:bg-secondary-600 text-secondary-900 dark:text-secondary-100 px-8 py-4 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
-    font-size: 1rem;
-    font-weight: 600;
+    @apply btn border border-line-strong text-fg hover:border-accent hover:text-accent;
   }
 
-  .card {
-    @apply bg-white dark:bg-secondary-800 rounded-xl shadow-lg border border-secondary-200 dark:border-secondary-700 p-8;
-  }
-
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent;
+  .tag {
+    @apply inline-flex items-center rounded border border-line bg-surface-2
+           px-2 py-1 font-mono text-2xs text-fg-muted;
   }
 }

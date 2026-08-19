@@ -52,4 +52,7 @@ logs
 .npm
 .yarn
 yarn.lock
-package-lock.json
+# package-lock.json is committed for reproducible installs
+
+# Source media (optimised copies live in public/)
+demo/

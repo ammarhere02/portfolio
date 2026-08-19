@@ -1,158 +1,119 @@
-# portfolio
+# Portfolio — Ammar Khan
 
+Personal portfolio site: backend engineering work, technical stack, and contact.
 
-A modern, interactive portfolio website built with Next.js, TypeScript, and Three.js, featuring stunning 3D visuals and smooth animations.
+🌐 **Live**: [portfolio-delta-pied-12.vercel.app](https://portfolio-delta-pied-12.vercel.app)
 
-🌐 **Live Demo**: [https://portfolio-delta-pied-12.vercel.app](https://portfolio-delta-pied-12.vercel.app)
+## Stack
 
-## ✨ Features
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 3.4 with semantic CSS-variable tokens |
+| Motion | Framer Motion |
+| Icons | Lucide React |
+| Type | Instrument Serif (display) · Inter Tight (body) · JetBrains Mono (code) |
 
-- **Modern Tech Stack**: Built with Next.js 14, TypeScript, and Tailwind CSS
-- **3D Interactive Elements**: Powered by Three.js and React Three Fiber
-- **Smooth Animations**: Enhanced user experience with Framer Motion
-- **Terminal Component**: Interactive terminal interface using xterm.js
-- **Syntax Highlighting**: Code display with react-syntax-highlighter
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Modern Icons**: Beautiful icons from Lucide React
-- **Performance Optimized**: Built with Next.js for optimal performance
+Fonts are self-hosted through `next/font`, so there are no third-party font
+requests and no layout shift on load.
 
-## 🛠️ Tech Stack
+## Design system
 
-- **Framework**: Next.js 14.2.5
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 3.4.1
-- **3D Graphics**: Three.js, React Three Fiber, React Three Drei
-- **Animations**: Framer Motion
-- **Terminal**: xterm.js with fit addon
-- **Icons**: Lucide React
-- **Code Highlighting**: React Syntax Highlighter
+Colours are defined once as RGB triplets in `src/app/globals.css` and consumed
+through Tailwind semantic tokens, so light and dark stay in sync automatically:
 
-## 🚀 Quick Start
+- `canvas`, `surface`, `surface-2` — backgrounds
+- `line`, `line-strong` — hairline borders
+- `fg`, `fg-muted`, `fg-subtle` — text
+- `accent` — the single accent colour
 
-### Prerequisites
+Adding `dark:` variants for colour is generally unnecessary; the tokens flip on
+their own when `.dark` is applied to `<html>`.
 
-- Node.js 18+ 
-- npm, yarn, or pnpm
+Shared component classes (`.shell`, `.display`, `.label`, `.panel`, `.btn-*`,
+`.tag`) live in the `@layer components` block of the same file.
 
-### Installation
+## Motion
 
-1. **Fork this repository**
-   ```bash
-   # Click the "Fork" button on GitHub or clone directly
-   git clone https://github.com/ammarhere02/portfolio.git
-   cd portfolio
-   ```
+All easing curves, durations, and viewport thresholds come from
+`src/lib/motion.ts`. Scroll reveals use the `Reveal` / `RevealGroup` /
+`RevealItem` primitives in `src/components/motion/`.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
+Every animated component checks `useReducedMotion()` and renders its final
+state directly when the visitor prefers reduced motion; `globals.css` also
+collapses all CSS transitions under `prefers-reduced-motion: reduce`.
 
-3. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000) to see the portfolio.
-
-## 📁 Project Structure
+## Structure
 
 ```
-portfolio/
-├── components/          # Reusable React components
-├── pages/              # Next.js pages
-├── public/             # Static assets
-├── styles/             # Global styles and Tailwind config
-├── types/              # TypeScript type definitions
-├── package.json        # Project dependencies
-└── README.md          # Project documentation
+src/
+├── app/
+│   ├── page.tsx          # Home
+│   ├── projects/[slug]/  # Statically generated case studies
+│   └── ...               # Layout, metadata, sitemap, robots, OG image
+├── components/
+│   ├── Hero/             # Hero section, typewriter, interactive terminal
+│   ├── About/            # Story, timeline, technical stack
+│   ├── Experience/       # Work history and education
+│   ├── Projects/         # Featured cards, project index, case-study media
+│   ├── Layout/           # Navigation, section headers, footer, theme toggle
+│   ├── motion/           # Reveal primitives, magnetic link
+│   └── providers/        # Theme context and pre-hydration script
+├── hooks/                # useTheme
+├── lib/                  # Site config, experience data, JSON-LD, motion tokens
+└── utils/                # Project data and case-study content
 ```
 
-## 🎨 Reusable Components
+## Content
 
-This portfolio includes several reusable components that you can easily extract and use in your own projects:
+Everything a recruiter reads comes from three files:
 
-### 3D Components
-- Interactive 3D scenes and models
-- Camera controls and animations
-- Lighting setups
+| File | Holds |
+|---|---|
+| `src/lib/site.ts` | Name, role, location, links, résumé path |
+| `src/lib/experience.ts` | Work history and education |
+| `src/utils/projectData.ts` | Projects and their case-study content |
 
-### UI Components
-- Modern card layouts
-- Animated buttons and links
-- Navigation components
-- Terminal interface
+Adding a project to `projectData.ts` automatically creates its
+`/projects/<id>` page, adds it to the sitemap, and lists it on the home page —
+no route file needed.
 
-### Animation Components
-- Page transitions
-- Scroll-triggered animations
-- Hover effects and micro-interactions
+### Résumé
 
-## 📋 Available Scripts
+`site.resumeUrl` is `null` by default, and the download button does not render
+while it is. Drop the PDF into `public/` and set the path to switch it on.
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
+### Media
 
-## 🎯 Customization
+Screenshots and demo clips live in `public/projects/<id>/`. Source recordings
+stay out of the repo (`demo/` is gitignored); only optimised WebP and H.264
+copies are committed. Images go through `next/image`; videos are muted,
+looping, and `preload="metadata"` so they cost nothing until played.
 
-### Personalizing the Portfolio
+## Theming
 
-1. **Update personal information** in the main components
-2. **Replace 3D models** in the Three.js scenes
-3. **Modify color scheme** in Tailwind config
-4. **Add your projects** and experiences
-5. **Update contact information** and social links
+`ThemeProvider` holds the theme in React context, so every toggle on the page
+shares one source of truth. A small script in `<head>` applies the stored or
+system preference before first paint, which avoids a flash of the wrong theme.
 
-### Using Components in Your Project
+## Running locally
 
-Each component is designed to be modular. To use them:
-
-1. Copy the component files you need
-2. Install the required dependencies from `package.json`
-3. Import and use in your project
-4. Customize styling and props as needed
-
-## 📦 Key Dependencies
-
-```json
-{
-  "next": "14.2.5",
-  "react": "^18",
-  "tailwindcss": "^3.4.1",
-  "framer-motion": "^11.3.8",
-  "@react-three/fiber": "^8.16.8",
-  "@react-three/drei": "^9.108.3",
-  "three": "^0.166.1",
-  "xterm": "^5.3.0",
-  "lucide-react": "^0.408.0"
-}
+```bash
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-## 🌐 Deployment
+```bash
+npm run build    # production build
+npm start        # serve the production build
+npm run lint     # eslint
+```
 
-This project is configured for easy deployment on Vercel:
+Requires Node 18+.
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy with zero configuration
+## Deployment
 
-For other platforms, run `npm run build` and deploy the `.next` folder.
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) for the amazing React framework
-- [Three.js](https://threejs.org/) for 3D graphics capabilities
-- [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
-- [Framer Motion](https://www.framer.com/motion/) for smooth animations
-
+Deployed on Vercel with zero configuration. Update `site.url` in
+`src/lib/site.ts` if the domain changes — metadata, the sitemap, `robots.txt`,
+and JSON-LD all read from it.
